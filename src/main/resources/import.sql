@@ -1,4 +1,4 @@
-﻿/* insert profesional*/
+﻿
 INSERT INTO profesional(apellido,email,nombre,telefono) VALUES ("Booth, Uma G.","lectus@mauriselit.edu","Allen","1-883-183-551");
 INSERT INTO profesional(apellido,email,nombre,telefono) VALUES ("Wall, Nathan C.","egestas@utodiovel.co.uk","Stone","1-542-994-189");
 INSERT INTO profesional(apellido,email,nombre,telefono) VALUES ("Dalton, Deanna U.","vitae@tincidunt.net","Luke","1-358-484-158");

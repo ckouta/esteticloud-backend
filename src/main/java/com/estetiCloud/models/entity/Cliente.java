@@ -1,5 +1,7 @@
 package com.estetiCloud.models.entity;
 
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,16 +11,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-
-
 @Entity
-@Table(name="profesional")
-public class Profesional {
-	
-	
+@Table(name = "clientes")
+public class Cliente implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id_cliente;
 
 	@NotEmpty
 	private String nombre;
@@ -32,17 +33,20 @@ public class Profesional {
 	@NotEmpty
 	@Email
 	private String email;
-	
-	public Profesional() {
-		
+
+	@NotEmpty
+	private Date fecha_nacimiento;
+
+	public Cliente() {
+
 	}
 
 	public Long getId() {
-		return id;
+		return id_cliente;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id_cliente = id;
 	}
 
 	public String getNombre() {
@@ -79,9 +83,7 @@ public class Profesional {
 
 	@Override
 	public String toString() {
-		return "Profesional [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono
-				+ ", email=" + email + "]";
+		return nombre + " " + apellido;
 	}
-	
-	
+
 }
