@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -36,6 +37,22 @@ public class Cliente implements Serializable {
 
 	@NotEmpty
 	private Date fecha_nacimiento;
+
+	
+	
+	
+	
+	
+	public Cliente(Long id_cliente, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty String telefono,
+			@NotEmpty @Email String email, @NotEmpty Date fecha_nacimiento) {
+		super();
+		this.id_cliente = id_cliente;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.email = email;
+		this.fecha_nacimiento = fecha_nacimiento;
+	}
 
 	public Cliente() {
 

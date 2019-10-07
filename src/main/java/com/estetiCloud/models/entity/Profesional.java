@@ -18,7 +18,7 @@ public class Profesional {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id_profesional;
 
 	@NotEmpty
 	private String nombre;
@@ -33,16 +33,18 @@ public class Profesional {
 	@Email
 	private String email;
 	
+
+	
 	public Profesional() {
 		
 	}
 
 	public Long getId() {
-		return id;
+		return id_profesional;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id_profesional = id;
 	}
 
 	public String getNombre() {
@@ -79,7 +81,7 @@ public class Profesional {
 
 	@Override
 	public String toString() {
-		return "Profesional [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono
+		return "Profesional [id=" + id_profesional + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono
 				+ ", email=" + email + "]";
 	}
 	
