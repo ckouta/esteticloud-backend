@@ -1,10 +1,14 @@
 package com.estetiCloud.models.entity;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -33,8 +37,24 @@ public class Profesional {
 	@Email
 	private String email;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_profesional"),
+    name = "id_estado_profesional", referencedColumnName = "id_estado_profesional")
+	private estado_profesional estado_profesional;
 
 	
+	public Profesional(Long id_profesional, @NotEmpty String nombre, @NotEmpty String apellido,
+			@NotEmpty String telefono, @NotEmpty @Email String email,
+			com.estetiCloud.models.entity.estado_profesional estado_profesional) {
+		super();
+		this.id_profesional = id_profesional;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.email = email;
+		this.estado_profesional = estado_profesional;
+	}
+
 	public Profesional() {
 		
 	}

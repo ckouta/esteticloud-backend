@@ -1,9 +1,13 @@
 package com.estetiCloud.models.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -30,17 +34,23 @@ public class Bloque_horario {
 	@NotEmpty
 	private String dia_semana;
 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_bloque"),
+    name = "id_estado_bloque", referencedColumnName = "id_estado_bloque")
+	private estado_bloque estado_bloque;
 	
 	
-	
+
 	public Bloque_horario(@NotEmpty Long idBloque, @NotEmpty String horaInicio, @NotEmpty String horaFin,
-			@NotEmpty String dia_semana) {
+			@NotEmpty String dia_semana, com.estetiCloud.models.entity.estado_bloque estado_bloque) {
 		super();
 		this.idBloque = idBloque;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 		this.dia_semana = dia_semana;
+		this.estado_bloque = estado_bloque;
 	}
+
 	public Bloque_horario() {
 		
 	}

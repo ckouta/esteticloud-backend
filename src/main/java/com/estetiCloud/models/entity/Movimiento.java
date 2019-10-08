@@ -29,16 +29,26 @@ public class Movimiento {
     name = "id_profesional", referencedColumnName = "id_profesional")
 	private Profesional profesional;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_movimiento"),
+    name = "id_estado_movimiento", referencedColumnName = "id_estado_movimiento")
+	private estado_movimiento estado_movimiento;
 	
+	
+
 	public Movimiento(Long id_movimiento, @NotEmpty String nombre, @NotEmpty String descripcion,
-			@NotEmpty Integer valor, @NotEmpty Date fecha) {
+			@NotEmpty Integer valor, @NotEmpty Date fecha, Profesional profesional,
+			com.estetiCloud.models.entity.estado_movimiento estado_movimiento) {
 		super();
 		this.id_movimiento = id_movimiento;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.valor = valor;
 		this.fecha = fecha;
+		this.profesional = profesional;
+		this.estado_movimiento = estado_movimiento;
 	}
+
 	public Movimiento() {
 		
 	}

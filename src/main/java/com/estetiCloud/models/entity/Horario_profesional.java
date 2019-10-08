@@ -4,11 +4,12 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -29,6 +30,15 @@ public class Horario_profesional {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Bloque_horario bloque_horario ;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(foreignKey = @ForeignKey(name = "id_reserva"),
+    name = "id_reserva", referencedColumnName = "id_reserva")
+	private Reserva reserva;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_horarioProfesional"),
+    name = "id_estado_horarioProfesional", referencedColumnName = "id_estado_horarioProfesional")
+	private estado_horarioProfesional estado_horarioProfesional;
 	
 	
 	public Horario_profesional(Long id_horarioProfesional, @NotEmpty Date fecha, Profesional profesional,

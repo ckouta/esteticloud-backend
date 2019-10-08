@@ -3,10 +3,13 @@ package com.estetiCloud.models.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -38,13 +41,16 @@ public class Cliente implements Serializable {
 	@NotEmpty
 	private Date fecha_nacimiento;
 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_cliente"),
+    name = "id_estado_cliente", referencedColumnName = "id_estado_cliente")
+	private estado_cliente estado_cliente;
 	
 	
-	
-	
-	
+
 	public Cliente(Long id_cliente, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty String telefono,
-			@NotEmpty @Email String email, @NotEmpty Date fecha_nacimiento) {
+			@NotEmpty @Email String email, @NotEmpty Date fecha_nacimiento,
+			com.estetiCloud.models.entity.estado_cliente estado_cliente) {
 		super();
 		this.id_cliente = id_cliente;
 		this.nombre = nombre;
@@ -52,6 +58,7 @@ public class Cliente implements Serializable {
 		this.telefono = telefono;
 		this.email = email;
 		this.fecha_nacimiento = fecha_nacimiento;
+		this.estado_cliente = estado_cliente;
 	}
 
 	public Cliente() {
