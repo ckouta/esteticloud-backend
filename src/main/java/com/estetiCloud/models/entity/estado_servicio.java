@@ -21,4 +21,28 @@ public class estado_servicio {
 	@NotEmpty
 	private String descripcion;
 
+	public Long getId_estado_servicio() {
+		return id_estado_servicio;
+	}
+
+	public void setId_estado_servicio(Long id_estado_servicio) {
+		this.id_estado_servicio = id_estado_servicio;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 }

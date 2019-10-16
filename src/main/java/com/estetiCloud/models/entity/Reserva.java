@@ -33,4 +33,46 @@ public class Reserva {
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_reserva"),
     name = "id_estado_reserva", referencedColumnName = "id_estado_reserva")
 	private estado_reserva estado_reserva;
+
+
+	public Long getId_reserva() {
+		return id_reserva;
+	}
+
+
+	public void setId_reserva(Long id_reserva) {
+		this.id_reserva = id_reserva;
+	}
+
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+
+	public Servicio getServicio() {
+		return servicio;
+	}
+
+
+	public void setServicio(Servicio servicio) {
+		this.servicio = servicio;
+	}
+
+
+	public estado_reserva getEstado_reserva() {
+		return estado_reserva;
+	}
+
+
+	public void setEstado_reserva(estado_reserva estado_reserva) {
+		this.estado_reserva = estado_reserva;
+	}
+	
+	
 }

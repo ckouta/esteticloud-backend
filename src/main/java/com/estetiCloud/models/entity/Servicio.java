@@ -38,12 +38,6 @@ public class Servicio implements Serializable{
 		
 	}
 	
-	public Long getId() {
-		return id_servicio;
-	}
-	public void setId(Long id) {
-		this.id_servicio = id;
-	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -61,6 +55,22 @@ public class Servicio implements Serializable{
 	}
 	public void setPrecio(Integer precio) {
 		this.precio = precio;
+	}
+
+	public Long getId_servicio() {
+		return id_servicio;
+	}
+
+	public void setId_servicio(Long id_servicio) {
+		this.id_servicio = id_servicio;
+	}
+
+	public estado_servicio getEstado_servicio() {
+		return estado_servicio;
+	}
+
+	public void setEstado_servicio(estado_servicio estado_servicio) {
+		this.estado_servicio = estado_servicio;
 	}
 	
 }

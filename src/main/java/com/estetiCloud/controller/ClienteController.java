@@ -11,61 +11,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.estetiCloud.models.entity.Profesional;
-import com.estetiCloud.models.entity.estado_profesional;
-import com.estetiCloud.models.service.IProfesionalService;
+import com.estetiCloud.models.entity.Cliente;
+import com.estetiCloud.models.service.IClienteService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/Profesional")
+@RequestMapping("/cliente")
 
-public class ProfesionalController {
+public class ClienteController {
 	
 	@Autowired
-    private IProfesionalService profesionalService;
+    private IClienteService clienteService;
 
-	@GetMapping(value = "/listaProfesional")
-    public ResponseEntity<List<Profesional>> findAll() {
-		List<Profesional>lista = profesionalService.findAll();
+	@GetMapping(value = "/listaCliente")
+    public ResponseEntity<List<Cliente>> findAll() {
+		List<Cliente>lista = clienteService.findAll();
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		
     	if (lista.isEmpty()) {
     		
     		response.put("mensaje","no hay lista ");
     		
-			return new ResponseEntity<List<Profesional>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Cliente>>(HttpStatus.NOT_FOUND);
 			
 		}
-		return new ResponseEntity<List<Profesional>>(lista, HttpStatus.OK); 
+		return new ResponseEntity<List<Cliente>>(lista, HttpStatus.OK); 
     }
-	
-	@GetMapping(value = "/listaEstadoProfesional")
-    public ResponseEntity<List<estado_profesional>> findAllEstado() {
-		List<estado_profesional>lista = profesionalService.findAllEstado();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<estado_profesional>>(HttpStatus.NOT_FOUND);
-			
-		}
-		return new ResponseEntity<List<estado_profesional>>(lista, HttpStatus.OK); 
-    }
-	
-
     @PostMapping(value= "/save")
-    public ResponseEntity<Profesional> create(@RequestBody Profesional profesional,BindingResult bindingResult){
+    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente,BindingResult bindingResult){
 
 
         try {
-        	profesionalService.save(profesional);
+        	clienteService.save(cliente);
         }catch(DataAccessException e) {
-            return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Cliente>(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<Profesional>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<Cliente>(HttpStatus.ACCEPTED);
     }
 
 
@@ -74,7 +56,7 @@ public class ProfesionalController {
 
         Map<String,Object> response =new HashMap<String, Object>();
         try {
-        	profesionalService.delete(id);
+        	clienteService.delete(id);
         }catch(DataAccessException e) {
             response.put("mensaje","Error al eliminar el profesional de la base de datos");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -88,31 +70,31 @@ public class ProfesionalController {
     
     
     @PutMapping(value ="/updateProfesional/{id}")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody Profesional profesional, @PathVariable Long id) {
-    	Profesional ProfesionalActual=profesionalService.findOne(id);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Cliente cliente, @PathVariable Long id) {
+    	Cliente Clienteactual=clienteService.findOne(id);
     	
 
         Map<String,Object> response =new HashMap<String, Object>();
 
-        if(ProfesionalActual==null) {
+        if(Clienteactual==null) {
             response.put("mensaje","No se pudo editar, el funcionario con el ID: ".concat(id.toString().concat(" no existe en la base de datos")));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
         }
         try {
-        	ProfesionalActual.setId_profesional(profesional.getId_profesional());
-        	ProfesionalActual.setNombre(profesional.getNombre());
-        	ProfesionalActual.setApellido(profesional.getApellido());
-        	ProfesionalActual.setTelefono(profesional.getTelefono());
-        	ProfesionalActual.setEmail(profesional.getEmail());
-        	profesionalService.save(ProfesionalActual);
+        	Clienteactual.setId(cliente.getId());
+        	Clienteactual.setNombre(cliente.getNombre());
+        	Clienteactual.setApellido(cliente.getApellido());
+        	Clienteactual.setTelefono(cliente.getTelefono());
+        	Clienteactual.setEmail(cliente.getEmail());
+        	clienteService.save(Clienteactual);
 
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al actualizar el Profesional en la base de datos");
+            response.put("mensaje","Error al actualizar el cliente en la base de datos");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje","El Profesional ha sido actualizado con éxito!");
+        response.put("mensaje","El Cliente ha sido actualizado con éxito!");
 
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 

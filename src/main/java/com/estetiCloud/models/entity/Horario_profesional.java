@@ -74,6 +74,22 @@ public class Horario_profesional {
 	public void setBloque_horario(Bloque_horario bloque_horario) {
 		this.bloque_horario = bloque_horario;
 	}
+
+	public Reserva getReserva() {
+		return reserva;
+	}
+
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+	}
+
+	public estado_horarioProfesional getEstado_horarioProfesional() {
+		return estado_horarioProfesional;
+	}
+
+	public void setEstado_horarioProfesional(estado_horarioProfesional estado_horarioProfesional) {
+		this.estado_horarioProfesional = estado_horarioProfesional;
+	}
 	
 	
 	

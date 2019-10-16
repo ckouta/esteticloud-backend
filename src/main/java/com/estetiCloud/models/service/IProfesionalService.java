@@ -3,6 +3,7 @@ package com.estetiCloud.models.service;
 import java.util.List;
 
 import com.estetiCloud.models.entity.Profesional;
+import com.estetiCloud.models.entity.estado_profesional;
 
 public interface IProfesionalService {
 
@@ -13,5 +14,10 @@ public interface IProfesionalService {
 	Profesional findOne(Long id);
 
 	void delete(Long id);
-
+	
+	List<estado_profesional> findAllEstado();
+	
+	
+	
+	
 }

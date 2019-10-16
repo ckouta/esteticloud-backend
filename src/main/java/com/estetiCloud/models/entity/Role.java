@@ -29,7 +29,6 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-
 	public String getAuthority() {
 		return authority;
 	}
@@ -38,6 +37,7 @@ public class Role implements Serializable {
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
+
 
 
 	private static final long serialVersionUID = 1L;

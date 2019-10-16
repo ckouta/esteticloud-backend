@@ -2,34 +2,50 @@ package com.estetiCloud.models.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.estetiCloud.models.dao.IEstadoProfesionalDao;
+//import com.estetiCloud.models.dao.IEstado_profesionalDao;
 import com.estetiCloud.models.dao.IProfesionalDao;
 import com.estetiCloud.models.entity.Profesional;
+import com.estetiCloud.models.entity.estado_profesional;
 
 @Service
 public class ProfesionalServiceImpl implements IProfesionalService {
 	@Autowired
 	private IProfesionalDao profesionalDao;
+	@Autowired
+	private IEstadoProfesionalDao estadoprofesionalDao;
 	
-	@Override
+	
+	
+	@Transactional(readOnly=true)
 	public List<Profesional> findAll() {
 		return profesionalDao.findAll();
 	}
 
-	@Override
+	@Transactional
 	public void save(Profesional profesional) {
 		profesionalDao.save(profesional);
 	}
 
-	@Override
+	@Transactional(readOnly=true)
 	public Profesional findOne(Long id) {
 		return profesionalDao.findById(id).orElse(null);
 	}
 
-	@Override
+	@Transactional
 	public void delete(Long id) {
 		profesionalDao.deleteById(id);
 	}
+
+	@Transactional(readOnly=true)
+	public List<estado_profesional> findAllEstado() {
+		// TODO Auto-generated method stub
+		return estadoprofesionalDao.findAll();
+	}
+
 }

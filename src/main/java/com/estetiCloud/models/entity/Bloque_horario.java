@@ -86,6 +86,14 @@ public class Bloque_horario {
 	public void setDia_semana(String dia_semana) {
 		this.dia_semana = dia_semana;
 	}
+
+	public estado_bloque getEstado_bloque() {
+		return estado_bloque;
+	}
+
+	public void setEstado_bloque(estado_bloque estado_bloque) {
+		this.estado_bloque = estado_bloque;
+	}
 	
 	
 	

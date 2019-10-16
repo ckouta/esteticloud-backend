@@ -21,4 +21,28 @@ public class estado_bloque {
 	@NotEmpty
 	private String descripcion;
 
+	public Long getId_estado_bloque() {
+		return id_estado_bloque;
+	}
+
+	public void setId_estado_bloque(Long id_estado_bloque) {
+		this.id_estado_bloque = id_estado_bloque;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 }

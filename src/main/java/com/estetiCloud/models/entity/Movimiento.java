@@ -93,6 +93,22 @@ public class Movimiento {
 		this.fecha = fecha;
 	}
 
+	public Profesional getProfesional() {
+		return profesional;
+	}
+
+	public void setProfesional(Profesional profesional) {
+		this.profesional = profesional;
+	}
+
+	public estado_movimiento getEstado_movimiento() {
+		return estado_movimiento;
+	}
+
+	public void setEstado_movimiento(estado_movimiento estado_movimiento) {
+		this.estado_movimiento = estado_movimiento;
+	}
+
 
 
 }

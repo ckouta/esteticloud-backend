@@ -105,6 +105,30 @@ public class Cliente implements Serializable {
 		this.email = email;
 	}
 
+	public Long getId_cliente() {
+		return id_cliente;
+	}
+
+	public void setId_cliente(Long id_cliente) {
+		this.id_cliente = id_cliente;
+	}
+
+	public Date getFecha_nacimiento() {
+		return fecha_nacimiento;
+	}
+
+	public void setFecha_nacimiento(Date fecha_nacimiento) {
+		this.fecha_nacimiento = fecha_nacimiento;
+	}
+
+	public estado_cliente getEstado_cliente() {
+		return estado_cliente;
+	}
+
+	public void setEstado_cliente(estado_cliente estado_cliente) {
+		this.estado_cliente = estado_cliente;
+	}
+
 	@Override
 	public String toString() {
 		return nombre + " " + apellido;

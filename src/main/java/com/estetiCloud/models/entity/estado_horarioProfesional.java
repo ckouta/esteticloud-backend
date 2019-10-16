@@ -21,4 +21,28 @@ public class estado_horarioProfesional {
 	@NotEmpty
 	private String descripcion;
 
+	public Long getId_estado_horarioProfesional() {
+		return id_estado_horarioProfesional;
+	}
+
+	public void setId_estado_horarioProfesional(Long id_estado_horarioProfesional) {
+		this.id_estado_horarioProfesional = id_estado_horarioProfesional;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 }

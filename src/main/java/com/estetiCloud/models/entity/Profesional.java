@@ -59,14 +59,6 @@ public class Profesional {
 		
 	}
 
-	public Long getId() {
-		return id_profesional;
-	}
-
-	public void setId(Long id) {
-		this.id_profesional = id;
-	}
-
 	public String getNombre() {
 		return nombre;
 	}
@@ -97,6 +89,22 @@ public class Profesional {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Long getId_profesional() {
+		return id_profesional;
+	}
+
+	public void setId_profesional(Long id_profesional) {
+		this.id_profesional = id_profesional;
+	}
+
+	public estado_profesional getEstado_profesional() {
+		return estado_profesional;
+	}
+
+	public void setEstado_profesional(estado_profesional estado_profesional) {
+		this.estado_profesional = estado_profesional;
 	}
 
 	@Override
