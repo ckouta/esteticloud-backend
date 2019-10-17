@@ -23,16 +23,16 @@ public class ClienteController {
 	@Autowired
     private IClienteService clienteService;
 
-	@GetMapping(value = "/listaCliente")
+	@GetMapping(value = "/listar")
     public ResponseEntity<List<Cliente>> findAll() {
 		List<Cliente>lista = clienteService.findAll();
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		
     	if (lista.isEmpty()) {
     		
-    		response.put("mensaje","no hay lista ");
+    		response.put("mensaje","No hay clientes para mostrar");
     		
-			return new ResponseEntity<List<Cliente>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Cliente>>(lista,	HttpStatus.NOT_FOUND);
 			
 		}
 		return new ResponseEntity<List<Cliente>>(lista, HttpStatus.OK); 
@@ -51,25 +51,25 @@ public class ClienteController {
     }
 
 
-    @RequestMapping(value = "/DeleteProfesional/{id}",  method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
         Map<String,Object> response =new HashMap<String, Object>();
         try {
         	clienteService.delete(id);
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al eliminar el profesional de la base de datos");
+            response.put("mensaje","Error al eliminar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El profesional fue eliminado con éxito!");
+        response.put("mensaje", "Eliminado con éxito!");
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 
     }
     
     
-    @PutMapping(value ="/updateProfesional/{id}")
+    @PutMapping(value ="/update/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Cliente cliente, @PathVariable Long id) {
     	Cliente Clienteactual=clienteService.findOne(id);
     	
@@ -81,7 +81,7 @@ public class ClienteController {
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
         }
         try {
-        	Clienteactual.setId(cliente.getId());
+
         	Clienteactual.setNombre(cliente.getNombre());
         	Clienteactual.setApellido(cliente.getApellido());
         	Clienteactual.setTelefono(cliente.getTelefono());
@@ -89,8 +89,8 @@ public class ClienteController {
         	clienteService.save(Clienteactual);
 
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al actualizar el cliente en la base de datos");
-            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+            response.put("mensaje", e.getMessage());
+            response.put("error",e.getStackTrace());
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -15,14 +15,14 @@ import com.estetiCloud.models.entity.Servicio;
 import com.estetiCloud.models.service.IServicioService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/Servicio")
+@RequestMapping("/servicio")
 
 public class ServicioController {
 	
 	@Autowired
     private IServicioService servicioService;
 
-	@GetMapping(value = "/listaProfesional")
+	@GetMapping(value = "/listar")
     public ResponseEntity<List<Servicio>> findAll() {
 		List<Servicio>lista = servicioService.findAll();
 		Map<String,Object> response =new HashMap<String, Object>(); 
@@ -50,7 +50,7 @@ public class ServicioController {
     }
 
 
-    @RequestMapping(value = "/DeleteProfesional/{id}",  method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
         Map<String,Object> response =new HashMap<String, Object>();
@@ -59,18 +59,18 @@ public class ServicioController {
         	
         	servicioService.delete(id);
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al eliminar el profesional de la base de datos");
+            response.put("mensaje","Error al eliminar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El profesional fue eliminado con éxito!");
+        response.put("mensaje", "Eliminado con éxito!");
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 
     }
     
     
-    @PutMapping(value ="/updateProfesional/{id}")
+    @PutMapping(value ="/update/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Servicio servicio, @PathVariable Long id) {
     	Servicio ServicioActual=servicioService.findOne(id);
     	
@@ -78,7 +78,7 @@ public class ServicioController {
         Map<String,Object> response =new HashMap<String, Object>();
 
         if(ServicioActual==null) {
-            response.put("mensaje","No se pudo editar, el servicio con el ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+            response.put("mensaje","No se pudo editar,  ID: ".concat(id.toString().concat(" no existe.")));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
         }
         try {
@@ -89,12 +89,12 @@ public class ServicioController {
         	servicioService.save(ServicioActual);
 
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al actualizar el Servicio en la base de datos");
+            response.put("mensaje","Error al actualizar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje","El Servicio ha sido actualizado con éxito!");
+        response.put("mensaje","Ha sido actualizado con éxito!");
 
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 
