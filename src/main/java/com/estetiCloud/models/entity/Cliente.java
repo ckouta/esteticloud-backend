@@ -13,7 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "clientes")
@@ -38,7 +42,7 @@ public class Cliente implements Serializable {
 	@Email
 	private String email;
 
-	@NotEmpty
+	@NotNull
 	private Date fecha_nacimiento;
 
 	@ManyToOne(cascade = CascadeType.ALL)
