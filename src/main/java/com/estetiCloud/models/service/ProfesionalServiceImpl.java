@@ -11,7 +11,7 @@ import com.estetiCloud.models.dao.IEstadoProfesionalDao;
 //import com.estetiCloud.models.dao.IEstado_profesionalDao;
 import com.estetiCloud.models.dao.IProfesionalDao;
 import com.estetiCloud.models.entity.Profesional;
-import com.estetiCloud.models.entity.estado_profesional;
+import com.estetiCloud.models.entity.EstadoProfesional;
 
 @Service
 public class ProfesionalServiceImpl implements IProfesionalService {
@@ -43,7 +43,7 @@ public class ProfesionalServiceImpl implements IProfesionalService {
 	}
 
 	@Transactional(readOnly=true)
-	public List<estado_profesional> findAllEstado() {
+	public List<EstadoProfesional> findAllEstado() {
 		// TODO Auto-generated method stub
 		return estadoprofesionalDao.findAll();
 	}

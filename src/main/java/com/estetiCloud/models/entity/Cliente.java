@@ -44,13 +44,13 @@ public class Cliente implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_cliente"),
     name = "id_estado_cliente", referencedColumnName = "id_estado_cliente")
-	private estado_cliente estado_cliente;
+	private EstadoCliente estado_cliente;
 	
 	
 
 	public Cliente(Long id_cliente, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty String telefono,
 			@NotEmpty @Email String email, @NotEmpty Date fecha_nacimiento,
-			com.estetiCloud.models.entity.estado_cliente estado_cliente) {
+			com.estetiCloud.models.entity.EstadoCliente estado_cliente) {
 		super();
 		this.id_cliente = id_cliente;
 		this.nombre = nombre;
@@ -121,11 +121,11 @@ public class Cliente implements Serializable {
 		this.fecha_nacimiento = fecha_nacimiento;
 	}
 
-	public estado_cliente getEstado_cliente() {
+	public EstadoCliente getEstado_cliente() {
 		return estado_cliente;
 	}
 
-	public void setEstado_cliente(estado_cliente estado_cliente) {
+	public void setEstado_cliente(EstadoCliente estado_cliente) {
 		this.estado_cliente = estado_cliente;
 	}
 

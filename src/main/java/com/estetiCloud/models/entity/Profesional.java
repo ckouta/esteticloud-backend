@@ -40,12 +40,12 @@ public class Profesional {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_profesional"),
     name = "id_estado_profesional", referencedColumnName = "id_estado_profesional")
-	private estado_profesional estado_profesional;
+	private EstadoProfesional estado_profesional;
 
 	
 	public Profesional(Long id_profesional, @NotEmpty String nombre, @NotEmpty String apellido,
 			@NotEmpty String telefono, @NotEmpty @Email String email,
-			com.estetiCloud.models.entity.estado_profesional estado_profesional) {
+			com.estetiCloud.models.entity.EstadoProfesional estado_profesional) {
 		super();
 		this.id_profesional = id_profesional;
 		this.nombre = nombre;
@@ -99,11 +99,11 @@ public class Profesional {
 		this.id_profesional = id_profesional;
 	}
 
-	public estado_profesional getEstado_profesional() {
+	public EstadoProfesional getEstado_profesional() {
 		return estado_profesional;
 	}
 
-	public void setEstado_profesional(estado_profesional estado_profesional) {
+	public void setEstado_profesional(EstadoProfesional estado_profesional) {
 		this.estado_profesional = estado_profesional;
 	}
 

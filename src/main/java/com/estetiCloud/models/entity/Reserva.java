@@ -32,7 +32,7 @@ public class Reserva {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_reserva"),
     name = "id_estado_reserva", referencedColumnName = "id_estado_reserva")
-	private estado_reserva estado_reserva;
+	private EstadoReserva estado_reserva;
 
 
 	public Long getId_reserva() {
@@ -65,12 +65,12 @@ public class Reserva {
 	}
 
 
-	public estado_reserva getEstado_reserva() {
+	public EstadoReserva getEstado_reserva() {
 		return estado_reserva;
 	}
 
 
-	public void setEstado_reserva(estado_reserva estado_reserva) {
+	public void setEstado_reserva(EstadoReserva estado_reserva) {
 		this.estado_reserva = estado_reserva;
 	}
 	

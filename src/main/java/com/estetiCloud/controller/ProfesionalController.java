@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.models.entity.Profesional;
-import com.estetiCloud.models.entity.estado_profesional;
+import com.estetiCloud.models.entity.EstadoProfesional;
 import com.estetiCloud.models.service.IProfesionalService;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -40,18 +40,18 @@ public class ProfesionalController {
     }
 	
 	@GetMapping(value = "/listaEstadoProfesional")
-    public ResponseEntity<List<estado_profesional>> findAllEstado() {
-		List<estado_profesional>lista = profesionalService.findAllEstado();
+    public ResponseEntity<List<EstadoProfesional>> findAllEstado() {
+		List<EstadoProfesional>lista = profesionalService.findAllEstado();
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		
     	if (lista.isEmpty()) {
     		
     		response.put("mensaje","no hay lista ");
     		
-			return new ResponseEntity<List<estado_profesional>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<EstadoProfesional>>(HttpStatus.NOT_FOUND);
 			
 		}
-		return new ResponseEntity<List<estado_profesional>>(lista, HttpStatus.OK); 
+		return new ResponseEntity<List<EstadoProfesional>>(lista, HttpStatus.OK); 
     }
 	
 

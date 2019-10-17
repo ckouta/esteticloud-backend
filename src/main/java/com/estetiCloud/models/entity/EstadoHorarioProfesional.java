@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "estado_horarioProfesional")
-public class estado_horarioProfesional {
+public class EstadoHorarioProfesional {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

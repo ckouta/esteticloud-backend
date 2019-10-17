@@ -2,9 +2,9 @@ package com.estetiCloud.models.dao;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.estetiCloud.models.entity.estado_reserva;
+import com.estetiCloud.models.entity.EstadoReserva;
 
-public interface IEstadoReservaDao extends JpaRepository<estado_reserva, Long>{
+public interface IEstadoReservaDao extends JpaRepository<EstadoReserva, Long>{
 
 	
 

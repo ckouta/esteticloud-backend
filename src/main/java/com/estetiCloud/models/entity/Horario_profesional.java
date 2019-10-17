@@ -38,7 +38,7 @@ public class Horario_profesional {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_horarioProfesional"),
     name = "id_estado_horarioProfesional", referencedColumnName = "id_estado_horarioProfesional")
-	private estado_horarioProfesional estado_horarioProfesional;
+	private EstadoHorarioProfesional estado_horarioProfesional;
 	
 	
 	public Horario_profesional(Long id_horarioProfesional, @NotEmpty Date fecha, Profesional profesional,
@@ -83,11 +83,11 @@ public class Horario_profesional {
 		this.reserva = reserva;
 	}
 
-	public estado_horarioProfesional getEstado_horarioProfesional() {
+	public EstadoHorarioProfesional getEstado_horarioProfesional() {
 		return estado_horarioProfesional;
 	}
 
-	public void setEstado_horarioProfesional(estado_horarioProfesional estado_horarioProfesional) {
+	public void setEstado_horarioProfesional(EstadoHorarioProfesional estado_horarioProfesional) {
 		this.estado_horarioProfesional = estado_horarioProfesional;
 	}
 	

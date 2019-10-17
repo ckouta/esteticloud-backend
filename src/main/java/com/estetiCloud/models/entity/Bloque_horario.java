@@ -37,12 +37,12 @@ public class Bloque_horario {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_bloque"),
     name = "id_estado_bloque", referencedColumnName = "id_estado_bloque")
-	private estado_bloque estado_bloque;
+	private EstadoBloque estado_bloque;
 	
 	
 
 	public Bloque_horario(@NotEmpty Long idBloque, @NotEmpty String horaInicio, @NotEmpty String horaFin,
-			@NotEmpty String dia_semana, com.estetiCloud.models.entity.estado_bloque estado_bloque) {
+			@NotEmpty String dia_semana, com.estetiCloud.models.entity.EstadoBloque estado_bloque) {
 		super();
 		this.idBloque = idBloque;
 		this.horaInicio = horaInicio;
@@ -87,11 +87,11 @@ public class Bloque_horario {
 		this.dia_semana = dia_semana;
 	}
 
-	public estado_bloque getEstado_bloque() {
+	public EstadoBloque getEstado_bloque() {
 		return estado_bloque;
 	}
 
-	public void setEstado_bloque(estado_bloque estado_bloque) {
+	public void setEstado_bloque(EstadoBloque estado_bloque) {
 		this.estado_bloque = estado_bloque;
 	}
 	

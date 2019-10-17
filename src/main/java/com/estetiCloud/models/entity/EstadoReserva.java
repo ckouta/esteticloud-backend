@@ -8,12 +8,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "estado_servicioOfrecido")
-public class estado_servicioOfrecido {
+@Table(name = "estado_reserva")
+public class EstadoReserva {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_estado_servicioOfrecido;
+	private Long id_estado_reserva;
 	
 	@NotEmpty
 	private String nombre;
@@ -21,12 +21,12 @@ public class estado_servicioOfrecido {
 	@NotEmpty
 	private String descripcion;
 
-	public Long getId_estado_servicioOfrecido() {
-		return id_estado_servicioOfrecido;
+	public Long getId_estado_reserva() {
+		return id_estado_reserva;
 	}
 
-	public void setId_estado_servicioOfrecido(Long id_estado_servicioOfrecido) {
-		this.id_estado_servicioOfrecido = id_estado_servicioOfrecido;
+	public void setId_estado_reserva(Long id_estado_reserva) {
+		this.id_estado_reserva = id_estado_reserva;
 	}
 
 	public String getNombre() {

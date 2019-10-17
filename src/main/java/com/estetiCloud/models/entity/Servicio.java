@@ -31,7 +31,7 @@ public class Servicio implements Serializable{
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_servicio"),
     name = "id_estado_servicio", referencedColumnName = "id_estado_servicio")
-	private estado_servicio estado_servicio ;
+	private EstadoServicio estado_servicio ;
 
 	
 	public Servicio() {
@@ -65,11 +65,11 @@ public class Servicio implements Serializable{
 		this.id_servicio = id_servicio;
 	}
 
-	public estado_servicio getEstado_servicio() {
+	public EstadoServicio getEstado_servicio() {
 		return estado_servicio;
 	}
 
-	public void setEstado_servicio(estado_servicio estado_servicio) {
+	public void setEstado_servicio(EstadoServicio estado_servicio) {
 		this.estado_servicio = estado_servicio;
 	}
 	

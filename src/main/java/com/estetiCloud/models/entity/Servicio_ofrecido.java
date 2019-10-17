@@ -22,7 +22,7 @@ public class Servicio_ofrecido {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_servicioOfrecido"),
     name = "id_estado_servicioOfrecido", referencedColumnName = "id_estado_servicioOfrecido")
-	private estado_servicioOfrecido estado_servicioOfrecido;
+	private EstadoServicioOfrecido estado_servicioOfrecido;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Servicio servicio ;
@@ -32,7 +32,7 @@ public class Servicio_ofrecido {
 
 	
 	public Servicio_ofrecido(Long id_servicioOfrecido, Servicio servicio, Profesional profesional,
-			com.estetiCloud.models.entity.estado_servicioOfrecido estado_servicioOfrecido) {
+			com.estetiCloud.models.entity.EstadoServicioOfrecido estado_servicioOfrecido) {
 		super();
 		this.id_servicioOfrecido = id_servicioOfrecido;
 		this.servicio = servicio;
@@ -68,11 +68,11 @@ public class Servicio_ofrecido {
 		this.profesional = profesional;
 	}
 
-	public estado_servicioOfrecido getEstado_servicioOfrecido() {
+	public EstadoServicioOfrecido getEstado_servicioOfrecido() {
 		return estado_servicioOfrecido;
 	}
 
-	public void setEstado_servicioOfrecido(estado_servicioOfrecido estado_servicioOfrecido) {
+	public void setEstado_servicioOfrecido(EstadoServicioOfrecido estado_servicioOfrecido) {
 		this.estado_servicioOfrecido = estado_servicioOfrecido;
 	}
 	

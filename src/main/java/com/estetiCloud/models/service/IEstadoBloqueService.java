@@ -2,15 +2,15 @@ package com.estetiCloud.models.service;
 
 import java.util.List;
 
-import com.estetiCloud.models.entity.Estado_bloque;
+import com.estetiCloud.models.entity.EstadoBloque;
 
 public interface IEstadoBloqueService {
 
-	List<Estado_bloque> findAll();
+	List<EstadoBloque> findAll();
 
-	void save(Estado_bloque profesional);
+	void save(EstadoBloque profesional);
 
-	Estado_bloque findOne(Long id);
+	EstadoBloque findOne(Long id);
 
 	void delete(Long id);
 

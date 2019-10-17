@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.estetiCloud.models.dao.IEstadoBloqueDao;
-import com.estetiCloud.models.entity.Estado_bloque;
+import com.estetiCloud.models.entity.EstadoBloque;
 
 @Service
 public class EstadoBloqueServiceImpl implements IEstadoBloqueService {
@@ -17,17 +17,17 @@ public class EstadoBloqueServiceImpl implements IEstadoBloqueService {
 	private IEstadoBloqueDao estadoBloqueDao;
 	
 	@Transactional(readOnly=true)
-	public List<Estado_bloque> findAll() {
+	public List<EstadoBloque> findAll() {
 		return estadoBloqueDao.findAll();
 	}
 
 	@Transactional
-	public void save(Estado_bloque estadoBloque) {
+	public void save(EstadoBloque estadoBloque) {
 		estadoBloqueDao.save(estadoBloque);
 	}
 
 	@Transactional(readOnly=true)
-	public Estado_bloque findOne(Long id) {
+	public EstadoBloque findOne(Long id) {
 		return estadoBloqueDao.findById(id).orElse(null);
 	}
 
