@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "estado_bloque")
-public class estado_bloque {
+public class Estado_bloque {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
