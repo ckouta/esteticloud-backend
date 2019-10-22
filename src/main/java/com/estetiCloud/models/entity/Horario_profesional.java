@@ -42,14 +42,19 @@ public class Horario_profesional {
 	
 	
 	public Horario_profesional(Long id_horarioProfesional, @NotEmpty Date fecha, Profesional profesional,
-			Bloque_horario bloque_horario) {
+			Bloque_horario bloque_horario, Reserva reserva, EstadoHorarioProfesional estado_horarioProfesional) {
 		super();
 		this.id_horarioProfesional = id_horarioProfesional;
 		this.fecha = fecha;
 		this.profesional = profesional;
 		this.bloque_horario = bloque_horario;
+		this.reserva = reserva;
+		this.estado_horarioProfesional = estado_horarioProfesional;
 	}
 	
+	public Horario_profesional() {
+		
+	}
 	public Long getId_horarioProfesional() {
 		return id_horarioProfesional;
 	}
