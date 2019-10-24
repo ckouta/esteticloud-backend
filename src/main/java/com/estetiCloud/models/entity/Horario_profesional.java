@@ -1,5 +1,6 @@
 package com.estetiCloud.models.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 
@@ -22,26 +24,26 @@ public class Horario_profesional {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_horarioProfesional;
 	
-	@NotEmpty
-	private Date fecha;
+	@NotNull
+	private LocalDate fecha;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Profesional profesional ;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Bloque_horario bloque_horario ;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_reserva"),
     name = "id_reserva", referencedColumnName = "id_reserva")
 	private Reserva reserva;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_horarioProfesional"),
     name = "id_estado_horarioProfesional", referencedColumnName = "id_estado_horarioProfesional")
 	private EstadoHorarioProfesional estado_horarioProfesional;
 	
 	
-	public Horario_profesional(Long id_horarioProfesional, @NotEmpty Date fecha, Profesional profesional,
+	public Horario_profesional(Long id_horarioProfesional, @NotEmpty LocalDate fecha, Profesional profesional,
 			Bloque_horario bloque_horario, Reserva reserva, EstadoHorarioProfesional estado_horarioProfesional) {
 		super();
 		this.id_horarioProfesional = id_horarioProfesional;
@@ -61,10 +63,10 @@ public class Horario_profesional {
 	public void setId_horarioProfesional(Long id_horarioProfesional) {
 		this.id_horarioProfesional = id_horarioProfesional;
 	}
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 	public Profesional getProfesional() {

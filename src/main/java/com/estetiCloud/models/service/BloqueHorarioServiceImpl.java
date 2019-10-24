@@ -1,5 +1,6 @@
 package com.estetiCloud.models.service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -7,16 +8,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.estetiCloud.models.dao.IBloqueHorarioDao;
+import com.estetiCloud.models.dao.IEstadoBloqueDao;
 import com.estetiCloud.models.entity.Bloque_horario;
+import com.estetiCloud.models.entity.EstadoBloque;
+import com.estetiCloud.models.entity.RangoHora;
 
 @Service
 public class BloqueHorarioServiceImpl implements IBloqueHorarioService {
 	@Autowired
 	private IBloqueHorarioDao bloqueDao;
-	
-	@Transactional(readOnly=true)
+
+	@Autowired
+	private IEstadoBloqueDao estadoDao;
+
+	@Autowired
+	private IBloqueHorarioService bloqueService;
+
+	@Transactional(readOnly = true)
 	public List<Bloque_horario> findAll() {
 		return bloqueDao.findAll();
 	}
@@ -26,7 +35,7 @@ public class BloqueHorarioServiceImpl implements IBloqueHorarioService {
 		bloqueDao.save(cliente);
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Bloque_horario findOne(Long id) {
 		return bloqueDao.findById(id).orElse(null);
 	}
@@ -35,4 +44,36 @@ public class BloqueHorarioServiceImpl implements IBloqueHorarioService {
 	public void delete(Long id) {
 		bloqueDao.deleteById(id);
 	}
+
+	@Override
+	public void generarBloques(RangoHora rango) {
+		LocalTime inicio=LocalTime.parse(rango.getHoraInicio());
+		LocalTime finInterv;		
+		LocalTime fin=LocalTime.parse(rango.getHoraFin());
+
+		while(inicio.compareTo(fin)< 0) {
+				
+			finInterv=inicio.plusMinutes(10);
+			for (int i = 0; i < 7; i++) {
+		
+				Bloque_horario bloque = new Bloque_horario(null,inicio.toString(),finInterv.toString(),i+"",estadoDao.getOne((long) 1));
+				bloqueService.save(bloque);
+			}				
+			inicio=finInterv;				
+		}
+	}
+
+	@Override
+	public List<Bloque_horario> findByDiaSemana(String dia_semana) {
+
+		return bloqueDao.findAllByDiaSemana(dia_semana);
+	}
+
+	@Override
+	public List<Bloque_horario> findByDiaSemanaAndHoraInicioBetween(String diaSemana, String horaInicio, String horaFin) {
+
+		return bloqueDao.findByDiaSemanaAndHoraInicioBetween(diaSemana, horaInicio,horaFin);
+	}
+	
+	
 }

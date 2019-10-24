@@ -45,4 +45,23 @@ public class EstadoBloque {
 		this.descripcion = descripcion;
 	}
 
+
+	public EstadoBloque(Long id_estado_bloque, @NotEmpty String nombre, @NotEmpty String descripcion) {
+
+		this.id_estado_bloque = id_estado_bloque;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+
+	public EstadoBloque() {
+
+	}
+
+	@Override
+	public String toString() {
+		return "EstadoBloque [id_estado_bloque=" + id_estado_bloque + ", nombre=" + nombre + ", descripcion="
+				+ descripcion + "]";
+	}
+	
+
 }

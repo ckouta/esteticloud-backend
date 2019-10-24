@@ -21,8 +21,6 @@ public class Bloque_horario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
-	@NotEmpty
 	private Long idBloque;
 
 	@NotEmpty
@@ -32,27 +30,24 @@ public class Bloque_horario {
 	private String horaFin;
 
 	@NotEmpty
-	private String dia_semana;
+	private String diaSemana;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_bloque"),
     name = "id_estado_bloque", referencedColumnName = "id_estado_bloque")
 	private EstadoBloque estado_bloque;
 	
+	public Bloque_horario() {}
 	
 
-	public Bloque_horario(@NotEmpty Long idBloque, @NotEmpty String horaInicio, @NotEmpty String horaFin,
-			@NotEmpty String dia_semana, com.estetiCloud.models.entity.EstadoBloque estado_bloque) {
-		super();
+	public Bloque_horario(Long idBloque, @NotEmpty String horaInicio, @NotEmpty String horaFin,
+			@NotEmpty String dia_semana, EstadoBloque estado_bloque) {
+
 		this.idBloque = idBloque;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
-		this.dia_semana = dia_semana;
+		this.diaSemana = dia_semana;
 		this.estado_bloque = estado_bloque;
-	}
-
-	public Bloque_horario() {
-		
 	}
 
 	public Long getIdBloque() {
@@ -79,12 +74,12 @@ public class Bloque_horario {
 		this.horaFin = horaFin;
 	}
 
-	public String getDia_semana() {
-		return dia_semana;
+	public String getDiaSemana() {
+		return diaSemana;
 	}
 
-	public void setDia_semana(String dia_semana) {
-		this.dia_semana = dia_semana;
+	public void setDiaSemana(String dia_semana) {
+		this.diaSemana = dia_semana;
 	}
 
 	public EstadoBloque getEstado_bloque() {
@@ -93,6 +88,12 @@ public class Bloque_horario {
 
 	public void setEstado_bloque(EstadoBloque estado_bloque) {
 		this.estado_bloque = estado_bloque;
+	}
+
+	@Override
+	public String toString() {
+		return "Bloque_horario [idBloque=" + idBloque + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin
+				+ ", dia_semana=" + diaSemana + ", estado_bloque=" + estado_bloque + "]";
 	}
 	
 	

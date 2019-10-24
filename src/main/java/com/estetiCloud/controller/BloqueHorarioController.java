@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.models.entity.Horario_profesional;
+import com.estetiCloud.models.entity.RangoHora;
 import com.estetiCloud.models.entity.Bloque_horario;
 import com.estetiCloud.models.service.IBloqueHorarioService;
 import com.estetiCloud.models.service.IHorarioProfesionalService;
@@ -41,6 +42,7 @@ public class BloqueHorarioController {
 		}
 		return new ResponseEntity<List<Horario_profesional>>(lista, HttpStatus.OK); 
     }
+	
 	@GetMapping(value = "/listarbloque")
     public ResponseEntity<List<Bloque_horario>> findAllBloques() {
 		List<Bloque_horario>lista = bloqueService.findAll();
@@ -66,6 +68,21 @@ public class BloqueHorarioController {
         }
 
         return new ResponseEntity<Horario_profesional>(HttpStatus.ACCEPTED);
+    }
+    
+    //@PostMapping(value="/generarbloques")
+    /*
+     * Crear los bloques horarios para la semana en un rango de horas*/
+    public ResponseEntity<Bloque_horario> createBloqueHorario(@RequestBody RangoHora rango, BindingResult bindingResult){
+    	try {
+    		bloqueService.generarBloques(rango);
+    	 }catch(DataAccessException e) {
+    		 System.out.println(e.getMessage());
+    		 System.out.println(e.getStackTrace().toString());
+             return new ResponseEntity<Bloque_horario>(HttpStatus.NOT_ACCEPTABLE);
+         }
+
+         return new ResponseEntity<Bloque_horario>(HttpStatus.ACCEPTED);
     }
 
 
