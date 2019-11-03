@@ -27,6 +27,10 @@ public class Servicio implements Serializable{
 	private Integer duracion;
 	@NotNull
 	private Integer precio;
+	@NotNull
+	private String descripcion;
+	
+	private String foto;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_servicio"),
@@ -38,6 +42,28 @@ public class Servicio implements Serializable{
 		
 	}
 	
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
