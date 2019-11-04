@@ -2,44 +2,34 @@ package com.estetiCloud.models.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 @Entity
-@Table(name="authorities",uniqueConstraints= {@UniqueConstraint(columnNames= {"user_id","authority"})})
+@Table(name = "roles")
 public class Role implements Serializable {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	private String authority;
-	
-	
-	public Long getId() {
-		return id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_Role;
+
+    @Column(unique = true, length = 20)
+    private String nombre;
+
+	public Long getId_Role() {
+		return id_Role;
 	}
 
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setId_Role(Long id_Role) {
+		this.id_Role = id_Role;
 	}
 
-	public String getAuthority() {
-		return authority;
+	public String getNombre() {
+		return nombre;
 	}
 
-
-	public void setAuthority(String authority) {
-		this.authority = authority;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-
-
-	private static final long serialVersionUID = 1L;
 
 }

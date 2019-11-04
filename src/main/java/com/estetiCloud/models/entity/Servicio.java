@@ -30,6 +30,7 @@ public class Servicio implements Serializable{
 	@NotNull
 	private String descripcion;
 	
+	
 	private String foto;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
