@@ -17,7 +17,7 @@ public interface IProfesionalService {
 	
 	List<EstadoProfesional> findAllEstado();
 	
-	
+	Profesional findOneCorreo(String correo);
 	
 	
 }

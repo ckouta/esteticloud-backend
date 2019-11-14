@@ -47,5 +47,15 @@ public class ProfesionalServiceImpl implements IProfesionalService {
 		// TODO Auto-generated method stub
 		return estadoprofesionalDao.findAll();
 	}
+	@Transactional(readOnly=true)
+	public Profesional findOneCorreo(String email) {
+		List<Profesional> lista = profesionalDao.findAll();
+		for(int i= 0; i<= lista.size();i++) {
+			if(lista.get(i).getEmail()==email) {
+				return lista.get(i);
+			}
+		}
+		return null;
+	}
 
 }

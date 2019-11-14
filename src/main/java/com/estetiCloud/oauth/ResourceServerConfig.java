@@ -22,6 +22,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/profesional/*").permitAll()
         		.antMatchers(HttpMethod.GET,"/servicio/**").permitAll()
+        		.antMatchers(HttpMethod.POST,"/horarioprofesional/lista").permitAll()
                 /*.antMatchers(HttpMethod.POST,"/saveTerrenos").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/deleteTerreno/**").hasRole("ADMIN")
                 //agregar todas las rutas faltantes...

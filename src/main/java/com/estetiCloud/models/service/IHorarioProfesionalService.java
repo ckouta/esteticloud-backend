@@ -17,5 +17,6 @@ public interface IHorarioProfesionalService {
 	void delete(Long id);
 
 	void saveRango(RangoFecha rango);
-
+	
+	List<Horario_profesional> findAllhoras(RangoFecha rango);
 }

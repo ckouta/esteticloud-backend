@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.models.entity.Profesional;
+import com.estetiCloud.models.entity.Servicio;
 import com.estetiCloud.models.entity.EstadoProfesional;
 import com.estetiCloud.models.service.IProfesionalService;
 
@@ -38,6 +40,32 @@ public class ProfesionalController {
 		}
 		return new ResponseEntity<List<Profesional>>(lista, HttpStatus.OK); 
     }
+	@GetMapping(value = "/profesional/{id}")
+    public ResponseEntity<?> show(@PathVariable long id) {
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		Profesional profesional = profesionalService.findOne(id);
+    	if (profesional==null ) {
+    		
+    		response.put("mensaje","no se encuentra el profesional");
+    		
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			
+		}
+		return new ResponseEntity<Profesional>(profesional, HttpStatus.OK); 
+    }
+	@GetMapping(value = "/profesional/{email}")
+    public ResponseEntity<?> showCorreo(@PathVariable String email) {
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		Profesional profesional = profesionalService.findOneCorreo(email);
+    	if (profesional==null ) {
+    		
+    		response.put("mensaje","no se encuentra el profesional");
+    		
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			
+		}
+		return new ResponseEntity<Profesional>(profesional, HttpStatus.OK); 
+    }
 	/*probando*/
 	@GetMapping(value = "/listaEstadoProfesional")
     public ResponseEntity<List<EstadoProfesional>> findAllEstado() {
@@ -54,11 +82,9 @@ public class ProfesionalController {
 		return new ResponseEntity<List<EstadoProfesional>>(lista, HttpStatus.OK); 
     }
 	
-
+	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/save")
     public ResponseEntity<Profesional> create(@RequestBody Profesional profesional,BindingResult bindingResult){
-
-
         try {
         	profesionalService.save(profesional);
         }catch(DataAccessException e) {

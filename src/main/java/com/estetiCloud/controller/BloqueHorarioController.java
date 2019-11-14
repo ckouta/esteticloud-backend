@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,8 @@ public class BloqueHorarioController {
     private IBloqueHorarioService bloqueService;
 	@Autowired
     private IHorarioProfesionalService horarioProfesionalService;
-
+	
+	@Secured("ROLE_ADMIN")
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<Horario_profesional>> findAll() {
 		List<Horario_profesional>lista = horarioProfesionalService.findAll();
@@ -43,6 +45,7 @@ public class BloqueHorarioController {
 		return new ResponseEntity<List<Horario_profesional>>(lista, HttpStatus.OK); 
     }
 	
+	@Secured("ROLE_ADMIN")
 	@GetMapping(value = "/listarbloque")
     public ResponseEntity<List<Bloque_horario>> findAllBloques() {
 		List<Bloque_horario>lista = bloqueService.findAll();
@@ -57,6 +60,7 @@ public class BloqueHorarioController {
 		}
 		return new ResponseEntity<List<Bloque_horario>>(lista, HttpStatus.OK); 
     }
+	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/save")
     public ResponseEntity<Horario_profesional> create(@RequestBody Horario_profesional cliente,BindingResult bindingResult){
 
