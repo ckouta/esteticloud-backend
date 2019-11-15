@@ -50,5 +50,16 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
     public Usuario findByUsername(String username) {
         return usuarioDao.findByUsername(username);
     }
+    @Override
+    @Transactional
+    public void save(Usuario us) {
+        usuarioDao.save(us);
+    }
 
+    @Override
+    @Transactional
+    public void saveUsuario_Roles(Long id_User, Long id_Rol) {
+        usuarioDao.saveUsuario_Roles(id_User, id_Rol);
+
+    }
 }

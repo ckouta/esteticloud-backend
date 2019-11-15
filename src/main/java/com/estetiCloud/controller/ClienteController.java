@@ -8,11 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.models.entity.Cliente;
+import com.estetiCloud.models.entity.Registro;
+import com.estetiCloud.models.entity.Role;
 import com.estetiCloud.models.service.IClienteService;
+import com.estetiCloud.models.service.IRoleService;
+import com.estetiCloud.models.service.IUsuarioService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -22,6 +27,12 @@ public class ClienteController {
 	
 	@Autowired
     private IClienteService clienteService;
+	@Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private IUsuarioService usuarioService;
+	@Autowired
+    private IRoleService roleService;
 
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<Cliente>> findAll() {
@@ -43,6 +54,23 @@ public class ClienteController {
 
         try {
         	clienteService.save(cliente);
+        }catch(DataAccessException e) {
+            return new ResponseEntity<Cliente>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<Cliente>(HttpStatus.ACCEPTED);
+    }
+    @PostMapping(value= "/usuario")
+    public ResponseEntity<Cliente> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
+    	Role rol = roleService.findOne((long) 2);
+
+        try {
+        	
+        	clienteService.save(registro.getCliente());
+        	registro.getUsuario().setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
+        	registro.getUsuario().setEnable(true);
+        	usuarioService.save(registro.getUsuario());
+        	 usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
         }catch(DataAccessException e) {
             return new ResponseEntity<Cliente>(HttpStatus.NOT_ACCEPTABLE);
         }
