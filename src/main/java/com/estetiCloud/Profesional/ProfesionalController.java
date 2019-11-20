@@ -29,6 +29,9 @@ public class ProfesionalController {
 	
 	@Autowired
     private IProfesionalService profesionalService;
+	
+	@Autowired
+	private IEstadoProfesionalService estadoProfService;
 
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<Profesional>> findAll() {
@@ -44,6 +47,8 @@ public class ProfesionalController {
 		}
 		return new ResponseEntity<List<Profesional>>(lista, HttpStatus.OK); 
     }
+	
+	
 	@GetMapping(value = "/profesional/{id}")
     public ResponseEntity<?> show(@PathVariable long id) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
@@ -57,6 +62,8 @@ public class ProfesionalController {
 		}
 		return new ResponseEntity<Profesional>(profesional, HttpStatus.OK); 
     }
+	
+	
 	@GetMapping(value = "/{email}")
     public ResponseEntity<?> showCorreo(@PathVariable String email) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
@@ -91,6 +98,7 @@ public class ProfesionalController {
     public ResponseEntity<Profesional> create(@RequestBody Profesional profesional){
         
 		try {
+			profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
         	profesionalService.save(profesional);
         	
         }catch(DataAccessException e) {
@@ -99,6 +107,8 @@ public class ProfesionalController {
 
         return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
     }
+	
+	
 	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/saveimagen")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo ,@RequestParam("id") Long id ){
@@ -133,7 +143,7 @@ public class ProfesionalController {
     }
 
 	@Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}",  method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
         Map<String,Object> response =new HashMap<String, Object>();

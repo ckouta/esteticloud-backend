@@ -13,10 +13,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 
 
 @Entity
 @Table(name="profesional")
+@SQLDelete(sql="Update profesional SET id_estado_profesional = 2 where id_profesional=?")
+@Where(clause="id_estado_profesional != 2")
 public class Profesional {
 	
 	
@@ -39,7 +44,7 @@ public class Profesional {
 	
 	private String foto;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_profesional"),
     name = "id_estado_profesional", referencedColumnName = "id_estado_profesional")
 	private EstadoProfesional estado_profesional;
