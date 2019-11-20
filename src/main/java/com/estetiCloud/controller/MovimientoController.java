@@ -22,7 +22,7 @@ import com.estetiCloud.models.service.IMovimientoService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/profesional")
+@RequestMapping("/movimiento")
 
 public class MovimientoController {
 	
