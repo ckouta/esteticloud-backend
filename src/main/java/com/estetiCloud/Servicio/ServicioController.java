@@ -63,25 +63,17 @@ public class ServicioController {
     }
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/save")
-    public ResponseEntity<Servicio> create(@ModelAttribute Servicio servicio,@RequestParam("archivo") MultipartFile archivo ){
+    public ResponseEntity<Servicio> create(@RequestBody Servicio servicio ){
 
 
         try {
-        	if(!archivo.isEmpty()) {
-        		String nombreArchivo = UUID.randomUUID().toString()+"_"+ archivo.getOriginalFilename().replace(" ","");
-        		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
-        		Files.copy(archivo.getInputStream(), rutaArchivo);
-        		servicio.setFoto(nombreArchivo);
-        	}
         	servicioService.save(servicio);
         	
         }catch(DataAccessException e) {
             return new ResponseEntity<Servicio>(HttpStatus.NOT_ACCEPTABLE);
-        } catch (IOException e) {
-			e.printStackTrace();
-		}
+        }
 
-        return new ResponseEntity<Servicio>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<Servicio>(servicio,HttpStatus.ACCEPTED);
     }
     @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/saveimagen")

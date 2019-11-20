@@ -15,11 +15,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.estetiCloud.Cliente.Cliente;
+import com.estetiCloud.Role.IRoleService;
+import com.estetiCloud.Role.Role;
 import com.estetiCloud.Servicio.Servicio;
+import com.estetiCloud.Usuario.IUsuarioService;
+import com.estetiCloud.Varios.Registro;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -29,6 +35,12 @@ public class ProfesionalController {
 	
 	@Autowired
     private IProfesionalService profesionalService;
+	@Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private IUsuarioService usuarioService;
+	@Autowired
+    private IRoleService roleService;
 
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<Profesional>> findAll() {
@@ -98,6 +110,24 @@ public class ProfesionalController {
         }
 
         return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
+    }
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value= "/usuario")
+    public ResponseEntity<Profesional> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
+    	Role rol = roleService.findOne((long) 3);
+
+        try {
+        	
+        	profesionalService.save(registro.getProfesional());
+        	registro.getUsuario().setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
+        	registro.getUsuario().setEnable(true);
+        	usuarioService.save(registro.getUsuario());
+        	 usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
+        }catch(DataAccessException e) {
+            return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<Profesional>(registro.getProfesional(),HttpStatus.ACCEPTED);
     }
 	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/saveimagen")
