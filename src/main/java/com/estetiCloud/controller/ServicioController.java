@@ -20,6 +20,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,7 +64,7 @@ public class ServicioController {
 		}
 		return new ResponseEntity<Servicio>(servicio, HttpStatus.OK); 
     }
-	
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/save")
     public ResponseEntity<Servicio> create(@ModelAttribute Servicio servicio,@RequestParam("archivo") MultipartFile archivo ){
 
@@ -85,7 +86,8 @@ public class ServicioController {
 
         return new ResponseEntity<Servicio>(HttpStatus.ACCEPTED);
     }
-    @PostMapping(value= "/upload")
+    @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
+    @PostMapping(value= "/saveimagen")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo,@RequestParam("id") Long id ){
     	Map<String,Object> response =new HashMap<String, Object>(); 
     	Servicio servicio = servicioService.findOne(id);
@@ -116,7 +118,7 @@ public class ServicioController {
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.ACCEPTED);
     }
 
-
+    @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
@@ -136,7 +138,7 @@ public class ServicioController {
 
     }
     
-    
+    @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PutMapping(value ="/update/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Servicio servicio, @PathVariable Long id) {
     	Servicio ServicioActual=servicioService.findOne(id);

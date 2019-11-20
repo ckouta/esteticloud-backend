@@ -18,21 +18,33 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_reserva;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_cliente"),
     name = "id_cliente", referencedColumnName = "id_cliente")
 	private Cliente cliente;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_servicio"),
     name = "id_servicio", referencedColumnName = "id_servicio")
 	private Servicio servicio ;
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_reserva"),
     name = "id_estado_reserva", referencedColumnName = "id_estado_reserva")
 	private EstadoReserva estado_reserva;
+
+
+	public Reserva(Long id_reserva, Cliente cliente, Servicio servicio, EstadoReserva estado_reserva) {
+		super();
+		this.id_reserva = id_reserva;
+		this.cliente = cliente;
+		this.servicio = servicio;
+		this.estado_reserva = estado_reserva;
+	}
+	public Reserva() {
+		
+	}
 
 
 	public Long getId_reserva() {

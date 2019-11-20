@@ -42,8 +42,8 @@ public class Cliente implements Serializable {
 	@Email
 	private String email;
 
-	@NotEmpty
-	private String Rut;
+	
+	private String rut;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_cliente"),
@@ -51,30 +51,49 @@ public class Cliente implements Serializable {
 	private EstadoCliente estado_cliente;
 	
 
+
 	public Cliente(Long id_cliente, @NotEmpty String nombre, @NotEmpty String apellido, @NotEmpty String telefono,
-			@NotEmpty @Email String email, @NotEmpty String rut, EstadoCliente estado_cliente) {
+			@NotEmpty @Email String email, String rut, EstadoCliente estado_cliente) {
 		super();
 		this.id_cliente = id_cliente;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.telefono = telefono;
 		this.email = email;
-		Rut = rut;
+		this.rut = rut;
 		this.estado_cliente = estado_cliente;
 	}
 
+
+
+
+
+
 	public String getRut() {
-		return Rut;
+		return rut;
 	}
 
+
+
+
+
+
 	public void setRut(String rut) {
-		Rut = rut;
+		this.rut = rut;
 	}
+
+
+
+
+
 
 	public Cliente() {
 
 	}
 
+	
+
+	
 	public Long getId() {
 		return id_cliente;
 	}

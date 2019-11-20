@@ -1,9 +1,10 @@
 package com.estetiCloud.models.service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -71,9 +72,9 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 		}	
 	}
 	@Transactional(readOnly=true)
-	public List<Horario_profesional> findAllhoras(RangoFecha rango) {
+	public List<Horario_profesional> findAllFecha(RangoFecha rango) {
 		LocalDate fechaInicio = LocalDate.parse(rango.getFecha());
-		List<Horario_profesional> horas = new ArrayList<Horario_profesional>();
+		/*List<Horario_profesional> horas = new ArrayList<Horario_profesional>();
 		List<Horario_profesional> lista = horarioProfesionalDao.findAll();
 		for(int i= 0; i< lista.size();i++) {
 			if(lista.get(i).getFecha().equals(fechaInicio) && lista.get(i).getProfesional().getId_profesional()==rango.getId()) {
@@ -82,6 +83,28 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 				
 			}
 		}
-		return horas;
+		return horas;*/
+		return horarioProfesionalDao.findByFechaAndProfesional(fechaInicio, profService.findOne(rango.getId()));
 	}
+	@Transactional(readOnly=true)
+	public List<Horario_profesional> findAllhoras(Profesional profesional) {
+		List<Horario_profesional> horario = new ArrayList<Horario_profesional>();
+		horarioProfesionalDao.findByProfesional(profesional).forEach(action ->{
+			if(action.getReserva()!=null) {
+				horario.add(action);
+			}
+		});
+		
+		Collections.sort(horario, new Comparator<Horario_profesional>() {
+
+			@Override
+			public int compare(Horario_profesional h1, Horario_profesional h2) {
+				
+				return new Integer(h1.getReserva().getId_reserva().intValue()).compareTo(new Integer(h2.getReserva().getId_reserva().intValue())); 
+			}
+
+		});
+		return horario;
+	}
+
 }

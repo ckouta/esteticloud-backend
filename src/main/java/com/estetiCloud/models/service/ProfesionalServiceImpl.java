@@ -49,13 +49,7 @@ public class ProfesionalServiceImpl implements IProfesionalService {
 	}
 	@Transactional(readOnly=true)
 	public Profesional findOneCorreo(String email) {
-		List<Profesional> lista = profesionalDao.findAll();
-		for(int i= 0; i<= lista.size();i++) {
-			if(lista.get(i).getEmail()==email) {
-				return lista.get(i);
-			}
-		}
-		return null;
+		return  profesionalDao.findByEmail(email);
 	}
 
 }

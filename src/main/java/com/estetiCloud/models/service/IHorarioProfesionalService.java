@@ -3,6 +3,7 @@ package com.estetiCloud.models.service;
 import java.util.List;
 
 import com.estetiCloud.models.entity.Horario_profesional;
+import com.estetiCloud.models.entity.Profesional;
 import com.estetiCloud.models.entity.RangoFecha;
 
 
@@ -18,5 +19,7 @@ public interface IHorarioProfesionalService {
 
 	void saveRango(RangoFecha rango);
 	
-	List<Horario_profesional> findAllhoras(RangoFecha rango);
+	List<Horario_profesional> findAllFecha(RangoFecha rango);
+	
+	List<Horario_profesional> findAllhoras(Profesional profesional);
 }

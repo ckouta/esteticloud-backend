@@ -20,9 +20,10 @@ import java.util.Arrays;
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/profesional/*").permitAll()
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/profesional/**").permitAll()
         		.antMatchers(HttpMethod.GET,"/servicio/**").permitAll()
         		.antMatchers(HttpMethod.POST,"/horarioprofesional/lista").permitAll()
+        		.antMatchers(HttpMethod.POST,"/cliente/usuario").permitAll()
                 /*.antMatchers(HttpMethod.POST,"/saveTerrenos").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/deleteTerreno/**").hasRole("ADMIN")
                 //agregar todas las rutas faltantes...

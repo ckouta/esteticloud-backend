@@ -1,8 +1,14 @@
 package com.estetiCloud.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.estetiCloud.models.entity.Profesional;
 import com.estetiCloud.models.entity.Servicio;
@@ -53,7 +60,7 @@ public class ProfesionalController {
 		}
 		return new ResponseEntity<Profesional>(profesional, HttpStatus.OK); 
     }
-	@GetMapping(value = "/profesional/{email}")
+	@GetMapping(value = "/{email}")
     public ResponseEntity<?> showCorreo(@PathVariable String email) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		Profesional profesional = profesionalService.findOneCorreo(email);
@@ -84,17 +91,51 @@ public class ProfesionalController {
 	
 	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/save")
-    public ResponseEntity<Profesional> create(@RequestBody Profesional profesional,BindingResult bindingResult){
-        try {
+    public ResponseEntity<Profesional> create(@RequestBody Profesional profesional){
+        
+		try {
         	profesionalService.save(profesional);
+        	
         }catch(DataAccessException e) {
             return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
         }
 
+        return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
+    }
+	@Secured("ROLE_ADMIN")
+    @PostMapping(value= "/saveimagen")
+    public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo ,@RequestParam("id") Long id ){
+        
+		try {
+			Profesional profesional = profesionalService.findOne(id);
+        	if(!archivo.isEmpty()) {
+        		String nombreArchivo = UUID.randomUUID().toString()+"_"+ archivo.getOriginalFilename().replace(" ","");
+        		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+        		Files.copy(archivo.getInputStream(), rutaArchivo);
+        		String nombreFotoAnterior = profesional.getFoto();
+        		
+                if(nombreFotoAnterior != null &&  nombreFotoAnterior.length() >0) {
+                	Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+                	File archivoFotoAnterior = rutaFotoAnterior.toFile();
+                	if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+                		archivoFotoAnterior.delete();
+                	}
+                }
+        		profesional.setFoto(nombreArchivo);
+        		profesionalService.save(profesional);
+        	}
+        	
+        	
+        }catch(DataAccessException e) {
+            return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+
         return new ResponseEntity<Profesional>(HttpStatus.ACCEPTED);
     }
 
-
+	@Secured("ROLE_ADMIN")
     @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
@@ -112,7 +153,7 @@ public class ProfesionalController {
 
     }
     
-    
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PutMapping(value ="/update/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Profesional profesional, @PathVariable Long id) {
     	Profesional ProfesionalActual=profesionalService.findOne(id);

@@ -35,4 +35,10 @@ public class ClienteServiceImpl implements IClienteService {
 	public void delete(Long id) {
 		clienteDao.deleteById(id);
 	}
+
+	@Override
+	public Cliente findOneCorreo(String email) {
+		
+		return clienteDao.findByEmail(email);
+	}
 }

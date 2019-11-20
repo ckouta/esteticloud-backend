@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.models.entity.Cliente;
+import com.estetiCloud.models.entity.Profesional;
 import com.estetiCloud.models.entity.Registro;
 import com.estetiCloud.models.entity.Role;
 import com.estetiCloud.models.service.IClienteService;
@@ -34,6 +36,7 @@ public class ClienteController {
 	@Autowired
     private IRoleService roleService;
 
+	@Secured("ROLE_ESTETI")
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<Cliente>> findAll() {
 		List<Cliente>lista = clienteService.findAll();
@@ -48,6 +51,21 @@ public class ClienteController {
 		}
 		return new ResponseEntity<List<Cliente>>(lista, HttpStatus.OK); 
     }
+	@Secured({"ROLE_ESTETI","ROLE_CLIENT"})
+	@GetMapping(value = "/{email}")
+    public ResponseEntity<?> showCorreo(@PathVariable String email) {
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		Cliente cliente = clienteService.findOneCorreo(email);
+    	if (cliente==null ) {
+    		
+    		response.put("mensaje","no se encuentra el profesional");
+    		
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			
+		}
+		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK); 
+    }
+	@Secured("ROLE_ESTETI")
     @PostMapping(value= "/save")
     public ResponseEntity<Cliente> create(@RequestBody Cliente cliente,BindingResult bindingResult){
 
@@ -78,7 +96,7 @@ public class ClienteController {
         return new ResponseEntity<Cliente>(HttpStatus.ACCEPTED);
     }
 
-
+    @Secured("ROLE_ESTETI")
     @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
@@ -96,7 +114,7 @@ public class ClienteController {
 
     }
     
-    
+    @Secured("ROLE_ESTETI")
     @PutMapping(value ="/update/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Cliente cliente, @PathVariable Long id) {
     	Cliente Clienteactual=clienteService.findOne(id);

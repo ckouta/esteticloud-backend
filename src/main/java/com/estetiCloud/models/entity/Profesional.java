@@ -37,6 +37,8 @@ public class Profesional {
 	@Email
 	private String email;
 	
+	private String foto;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_profesional"),
     name = "id_estado_profesional", referencedColumnName = "id_estado_profesional")
@@ -57,6 +59,14 @@ public class Profesional {
 
 	public Profesional() {
 		
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 	public String getNombre() {
