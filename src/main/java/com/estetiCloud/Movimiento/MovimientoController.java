@@ -1,4 +1,4 @@
-package com.estetiCloud.controller;
+package com.estetiCloud.Movimiento;
 
 
 import java.util.HashMap;
@@ -15,14 +15,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 
-import com.estetiCloud.models.entity.Movimiento;
-
-import com.estetiCloud.models.entity.EstadoMovimiento;
-import com.estetiCloud.models.service.IMovimientoService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/profesional")
+@RequestMapping("/movimiento")
 
 public class MovimientoController {
 	
