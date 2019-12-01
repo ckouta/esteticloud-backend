@@ -20,10 +20,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.estetiCloud.Cliente.Cliente;
+
 import com.estetiCloud.Role.IRoleService;
 import com.estetiCloud.Role.Role;
-import com.estetiCloud.Servicio.Servicio;
 import com.estetiCloud.Usuario.IUsuarioService;
 import com.estetiCloud.Varios.Registro;
 
@@ -57,7 +56,7 @@ public class ProfesionalController {
     		
     		response.put("mensaje","no hay lista ");
     		
-			return new ResponseEntity<List<Profesional>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Profesional>>(HttpStatus.NO_CONTENT);
 			
 		}
 		return new ResponseEntity<List<Profesional>>(lista, HttpStatus.OK); 
@@ -117,10 +116,10 @@ public class ProfesionalController {
         	profesionalService.save(profesional);
         	
         }catch(DataAccessException e) {
-            return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Profesional>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Profesional>(profesional,HttpStatus.CREATED);
     }
 	
 	
@@ -128,10 +127,11 @@ public class ProfesionalController {
 	@PostMapping(value= "/usuario")
     public ResponseEntity<Profesional> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
     	Role rol = roleService.findOne((long) 3);
+    	Profesional profesional = registro.getProfesional();
 
         try {
-        	
-        	profesionalService.save(registro.getProfesional());
+        	profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
+        	profesionalService.save(profesional);
         	registro.getUsuario().setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
         	registro.getUsuario().setEnable(true);
         	usuarioService.save(registro.getUsuario());
@@ -140,7 +140,7 @@ public class ProfesionalController {
             return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<Profesional>(registro.getProfesional(),HttpStatus.ACCEPTED);
+        return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
     }
 	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/saveimagen")
@@ -148,6 +148,7 @@ public class ProfesionalController {
         
 		try {
 			Profesional profesional = profesionalService.findOne(id);
+			System.out.print(profesional.toString());
         	if(!archivo.isEmpty()) {
         		String nombreArchivo = UUID.randomUUID().toString()+"_"+ archivo.getOriginalFilename().replace(" ","");
         		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();

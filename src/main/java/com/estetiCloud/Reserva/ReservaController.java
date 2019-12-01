@@ -48,10 +48,10 @@ public class ReservaController {
         try {
         	reservaService.save(reserva);
         }catch(DataAccessException e) {
-            return new ResponseEntity<Reserva>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Reserva>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Reserva>(reserva,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Reserva>(reserva,HttpStatus.CREATED);
     }
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
     @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
