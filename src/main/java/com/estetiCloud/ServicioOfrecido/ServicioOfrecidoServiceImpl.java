@@ -1,5 +1,6 @@
 package com.estetiCloud.ServicioOfrecido;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -7,15 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.estetiCloud.Profesional.IEstadoProfesionalDao;
 import com.estetiCloud.Profesional.Profesional;
+import com.estetiCloud.Servicio.IServicioDao;
 import com.estetiCloud.Servicio.Servicio;
 
 @Service
 public class ServicioOfrecidoServiceImpl implements IServicioOfrecidoService {
 	@Autowired
 	private IServicioOfrecidoDao servicioOfrecidoDao;
-	
+	@Autowired
+	private IServicioDao servicio;
 	
 	
 	@Transactional(readOnly=true)
@@ -48,6 +50,15 @@ public class ServicioOfrecidoServiceImpl implements IServicioOfrecidoService {
 	public List<ServicioOfrecido> buscarPorProfesional(Profesional profesional) {
 		// TODO Auto-generated method stub
 		return servicioOfrecidoDao.findByProfesional(profesional);
+	}
+	public List<Servicio> buscarDistintosProfesional(Profesional profesional) {
+		// TODO Auto-generated method stub
+		List<Servicio> servicios = servicio.findAll();
+    		for(ServicioOfrecido servicioOfrecido : servicioOfrecidoDao.findByProfesional(profesional)) {
+    			servicios.remove(servicioOfrecido.getServicio());
+    		}
+		
+		return servicios;
 	}
 
 }

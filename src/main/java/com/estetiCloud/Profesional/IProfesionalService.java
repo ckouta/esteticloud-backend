@@ -16,5 +16,5 @@ public interface IProfesionalService {
 	
 	Profesional findOneCorreo(String correo);
 	
-	
+	Profesional findOneRut(String rut);
 }

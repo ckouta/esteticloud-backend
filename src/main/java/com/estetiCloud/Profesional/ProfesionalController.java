@@ -112,6 +112,7 @@ public class ProfesionalController {
     public ResponseEntity<Profesional> create(@RequestBody Profesional profesional){
         
 		try {
+			
 			profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
         	profesionalService.save(profesional);
         	

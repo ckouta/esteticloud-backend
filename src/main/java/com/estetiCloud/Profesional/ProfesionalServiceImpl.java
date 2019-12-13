@@ -45,5 +45,9 @@ public class ProfesionalServiceImpl implements IProfesionalService {
 	public Profesional findOneCorreo(String email) {
 		return  profesionalDao.findByEmail(email);
 	}
+	
+	public Profesional findOneRut(String rut) {
+		return profesionalDao.findByRut(rut);
+	}
 
 }
