@@ -19,9 +19,6 @@ import com.estetiCloud.Varios.RangoFecha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
 @Service
 public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService {
 	@Autowired
@@ -74,16 +71,6 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 	@Transactional(readOnly=true)
 	public List<HorarioProfesional> findAllFecha(RangoFecha rango) {
 		LocalDate fechaInicio = LocalDate.parse(rango.getFecha());
-		/*List<Horario_profesional> horas = new ArrayList<Horario_profesional>();
-		List<Horario_profesional> lista = horarioProfesionalDao.findAll();
-		for(int i= 0; i< lista.size();i++) {
-			if(lista.get(i).getFecha().equals(fechaInicio) && lista.get(i).getProfesional().getId_profesional()==rango.getId()) {
-				System.out.println(lista.size() +" =="+ i);
-				horas.add(lista.get(i));
-				
-			}
-		}
-		return horas;*/
 		return horarioProfesionalDao.findByFechaAndProfesional(fechaInicio, profService.findOne(rango.getId()));
 	}
 	@Transactional(readOnly=true)

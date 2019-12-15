@@ -18,33 +18,15 @@ import com.estetiCloud.Varios.RangoHora;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/horario")
+@RequestMapping("/bloque")
 
 public class BloqueHorarioController {
 	
 	@Autowired
     private IBloqueHorarioService bloqueService;
-	@Autowired
-    private IHorarioProfesionalService horarioProfesionalService;
 	
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-	@GetMapping(value = "/listar")
-    public ResponseEntity<List<HorarioProfesional>> findAll() {
-		List<HorarioProfesional>lista = horarioProfesionalService.findAll();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","No hay clientes para mostrar");
-    		
-			return new ResponseEntity<List<HorarioProfesional>>(lista,	HttpStatus.NOT_FOUND);
-			
-		}
-		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
-    }
-	
-	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-	@GetMapping(value = "/listarbloque")
+	@GetMapping(value = "/")
     public ResponseEntity<List<Bloque_horario>> findAllBloques() {
 		List<Bloque_horario>lista = bloqueService.findAll();
 		Map<String,Object> response =new HashMap<String, Object>(); 
@@ -58,19 +40,7 @@ public class BloqueHorarioController {
 		}
 		return new ResponseEntity<List<Bloque_horario>>(lista, HttpStatus.OK); 
     }
-	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @PostMapping(value= "/save")
-    public ResponseEntity<HorarioProfesional> create(@RequestBody HorarioProfesional cliente,BindingResult bindingResult){
-
-
-        try {
-        	horarioProfesionalService.save(cliente);
-        }catch(DataAccessException e) {
-            return new ResponseEntity<HorarioProfesional>(HttpStatus.NOT_ACCEPTABLE);
-        }
-
-        return new ResponseEntity<HorarioProfesional>(HttpStatus.ACCEPTED);
-    }
+	
     
     //@PostMapping(value="/generarbloques")
     /*

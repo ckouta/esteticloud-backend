@@ -3,7 +3,6 @@ package com.estetiCloud.HorarioProfesional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,20 +17,35 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.estetiCloud.Cliente.Cliente;
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Reserva.Reserva;
 import com.estetiCloud.Varios.RangoFecha;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/horarioprofesional")
+@RequestMapping("/horario")
 public class HorarioProfesionalController {
 
 	@Autowired
 	private IHorarioProfesionalService horarioService;
 	
+	/*lista todos los horarios*/
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
+	@GetMapping(value = "/")
+    public ResponseEntity<List<HorarioProfesional>> findAll() {
+		List<HorarioProfesional>lista = horarioService.findAll();
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (lista.isEmpty()) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<List<HorarioProfesional>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
+    }
+	/*Guarda un rango de horario*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
 	@PostMapping(value = "/save")
     public ResponseEntity<HorarioProfesional> save(@RequestBody RangoFecha rango,BindingResult bindingResult){
@@ -39,52 +53,43 @@ public class HorarioProfesionalController {
         try {
         	horarioService.saveRango(rango);
         }catch(DataAccessException e) {
-            return new ResponseEntity<HorarioProfesional>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<HorarioProfesional>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<HorarioProfesional>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<HorarioProfesional>(HttpStatus.CREATED);
     }
+	/*retorna los horario de una fecha y un profesional*/
     @Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
     @PostMapping(value = "/listafecha")
     public ResponseEntity<List<HorarioProfesional>> findAllFecha(@RequestBody RangoFecha rango) {
-		List<HorarioProfesional>lista = horarioService.findAllFecha(rango);
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","No hay clientes para mostrar");
-    		
-			return new ResponseEntity<List<HorarioProfesional>>(lista,	HttpStatus.NOT_FOUND);
+		List<HorarioProfesional>lista = horarioService.findAllFecha(rango);		
+    	if (lista.isEmpty()) {    		
+			return new ResponseEntity<List<HorarioProfesional>>(HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
     }
+    
+    /*retorna todos los horarios disponible de un profesional*/
     @Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
-    @PostMapping(value = "/lista")
-    public ResponseEntity<List<HorarioProfesional>> findAll(@RequestBody Profesional profesional) {
-		List<HorarioProfesional>lista = horarioService.findAllhoras(profesional);
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","No hay clientes para mostrar");
-    		
-			return new ResponseEntity<List<HorarioProfesional>>(lista,	HttpStatus.NOT_FOUND);
-			
+    @PostMapping(value = "/listaHoras")
+    public ResponseEntity<List<HorarioProfesional>> findAllHoras(@RequestBody Profesional profesional) {
+		List<HorarioProfesional>lista = horarioService.findAllhoras(profesional);	
+    	if (lista.isEmpty()) {		
+			return new ResponseEntity<List<HorarioProfesional>>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}
 		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
     }
+    
+    /*actualiza un horario con la reserva asignada*/
     @Secured({"ROLE_CLIENT","ROLE_ESTETI"})
-    @PutMapping(value ="/reservaupdate/{id}")
+    @PutMapping(value ="/reserva/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Reserva reserva, @PathVariable Long id) {
     	HorarioProfesional horario=horarioService.findOne(id);
-    	
-
         Map<String,Object> response =new HashMap<String, Object>();
-
         if(horario==null) {
             response.put("mensaje","No se pudo editar : ".concat(id.toString().concat(" no existe.")));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
         	horario.setReserva(reserva);
@@ -95,24 +100,19 @@ public class HorarioProfesionalController {
             response.put("error",e.getStackTrace());
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         response.put("mensaje","Ha sido actualizado con éxito!");
 
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 
     }
-
+    
+    /*retorna los horarios asignados a la reserva*/
     @Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
-    @PostMapping(value = "/hora")
+    @PostMapping(value = "/reserva")
     public ResponseEntity<HorarioProfesional> findbyReserva(@RequestBody Reserva reserva) {
-		HorarioProfesional horario = horarioService.findByReserva(reserva);
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (horario==null) {
-    		
-    		response.put("mensaje","No hay clientes para mostrar");
-    		
-			return new ResponseEntity<HorarioProfesional>(HttpStatus.NOT_FOUND);
+		HorarioProfesional horario = horarioService.findByReserva(reserva);	
+    	if (horario==null) {    		
+			return new ResponseEntity<HorarioProfesional>(HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 		return new ResponseEntity<HorarioProfesional>(horario, HttpStatus.OK); 
