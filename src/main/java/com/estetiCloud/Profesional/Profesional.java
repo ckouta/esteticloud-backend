@@ -2,6 +2,7 @@ package com.estetiCloud.Profesional;
 
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -30,13 +32,23 @@ public class Profesional {
 	private Long id_profesional;
 
 	@NotEmpty
+	@Size(min=4,max=20)
 	private String nombre;
+	
+	@NotEmpty
+	@Column(unique = true, length = 20)
+	private String rut;
 
 	@NotEmpty
 	private String apellido;
 
+	
 	@NotEmpty
 	private String telefono;
+	
+	@NotEmpty
+	@Size(min=4,max=200)
+	private String descripcion;
 
 	@NotEmpty
 	@Email
@@ -49,17 +61,37 @@ public class Profesional {
     name = "id_estado_profesional", referencedColumnName = "id_estado_profesional")
 	private EstadoProfesional estado_profesional;
 
-	
-	public Profesional(Long id_profesional, @NotEmpty String nombre, @NotEmpty String apellido,
-			@NotEmpty String telefono, @NotEmpty @Email String email,
-			com.estetiCloud.Profesional.EstadoProfesional estado_profesional) {
+
+	public Profesional(Long id_profesional, @NotEmpty @Size(min = 4, max = 20) String nombre, @NotEmpty String rut,
+			@NotEmpty String apellido, @NotEmpty String telefono,
+			@NotEmpty @Size(min = 4, max = 200) String descripcion, @NotEmpty @Email String email, String foto,
+			EstadoProfesional estado_profesional) {
 		super();
 		this.id_profesional = id_profesional;
 		this.nombre = nombre;
+		this.rut = rut;
 		this.apellido = apellido;
 		this.telefono = telefono;
+		this.descripcion = descripcion;
 		this.email = email;
+		this.foto = foto;
 		this.estado_profesional = estado_profesional;
+	}
+
+	public String getRut() {
+		return rut;
+	}
+
+	public void setRut(String rut) {
+		this.rut = rut;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public Profesional() {

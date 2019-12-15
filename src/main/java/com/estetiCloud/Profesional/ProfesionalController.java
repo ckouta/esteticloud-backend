@@ -15,11 +15,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.estetiCloud.Servicio.Servicio;
+
+import com.estetiCloud.Role.IRoleService;
+import com.estetiCloud.Role.Role;
+import com.estetiCloud.Usuario.IUsuarioService;
+import com.estetiCloud.Varios.Registro;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -29,9 +34,18 @@ public class ProfesionalController {
 	
 	@Autowired
     private IProfesionalService profesionalService;
+
+	@Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private IUsuarioService usuarioService;
+	@Autowired
+    private IRoleService roleService;
+
 	
 	@Autowired
 	private IEstadoProfesionalService estadoProfService;
+
 
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<Profesional>> findAll() {
@@ -42,7 +56,7 @@ public class ProfesionalController {
     		
     		response.put("mensaje","no hay lista ");
     		
-			return new ResponseEntity<List<Profesional>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Profesional>>(HttpStatus.NO_CONTENT);
 			
 		}
 		return new ResponseEntity<List<Profesional>>(lista, HttpStatus.OK); 
@@ -98,23 +112,44 @@ public class ProfesionalController {
     public ResponseEntity<Profesional> create(@RequestBody Profesional profesional){
         
 		try {
+			
 			profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
         	profesionalService.save(profesional);
         	
+        }catch(DataAccessException e) {
+            return new ResponseEntity<Profesional>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Profesional>(profesional,HttpStatus.CREATED);
+    }
+	
+	
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value= "/usuario")
+    public ResponseEntity<Profesional> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
+    	Role rol = roleService.findOne((long) 3);
+    	Profesional profesional = registro.getProfesional();
+
+        try {
+        	profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
+        	profesionalService.save(profesional);
+        	registro.getUsuario().setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
+        	registro.getUsuario().setEnable(true);
+        	usuarioService.save(registro.getUsuario());
+        	 usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
         }catch(DataAccessException e) {
             return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
         }
 
         return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
     }
-	
-	
 	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/saveimagen")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo ,@RequestParam("id") Long id ){
         
 		try {
 			Profesional profesional = profesionalService.findOne(id);
+			System.out.print(profesional.toString());
         	if(!archivo.isEmpty()) {
         		String nombreArchivo = UUID.randomUUID().toString()+"_"+ archivo.getOriginalFilename().replace(" ","");
         		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
@@ -190,5 +225,6 @@ public class ProfesionalController {
 
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 
-    }
+ 
+	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.estetiCloud.Cliente.Cliente;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,9 @@ public class ReservaServiceImpl implements IReservaService {
 	@Transactional
 	public void delete(Long id) {
 		reservaDao.deleteById(id);
+	}
+	@Transactional(readOnly=true)
+	public List<Reserva> findOneCliente(Cliente cliente) {
+		return reservaDao.findByCliente(cliente);
 	}
 }

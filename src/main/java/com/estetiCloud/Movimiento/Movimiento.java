@@ -1,11 +1,16 @@
 package com.estetiCloud.Movimiento;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.estetiCloud.Profesional.Profesional;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "movimiento")
@@ -20,18 +25,20 @@ public class Movimiento {
 	@NotEmpty
 	private String descripcion;
 
-	@NotEmpty
+	@NotNull
 	private Integer valor;
 	
-	@NotEmpty
+	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date fecha;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_profesional"),
     name = "id_profesional", referencedColumnName = "id_profesional")
 	private Profesional profesional;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_movimiento"),
     name = "id_estado_movimiento", referencedColumnName = "id_estado_movimiento")
 	private EstadoMovimiento estado_movimiento;

@@ -13,6 +13,7 @@ import com.estetiCloud.BloqueHorario.Bloque_horario;
 import com.estetiCloud.BloqueHorario.IBloqueHorarioService;
 import com.estetiCloud.Profesional.IProfesionalService;
 import com.estetiCloud.Profesional.Profesional;
+import com.estetiCloud.Reserva.Reserva;
 import com.estetiCloud.Varios.RangoFecha;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,12 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 
 		});
 		return horario;
+	}
+	
+	@Transactional(readOnly=true)
+	public HorarioProfesional findByReserva(Reserva reserva) {
+		List<HorarioProfesional> lista = horarioProfesionalDao.findByReserva(reserva);
+		return lista.get(0);
 	}
 
 }

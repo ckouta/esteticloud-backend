@@ -18,6 +18,8 @@ public interface IServicioOfrecidoService {
 	List<ServicioOfrecido> buscarPorServicio(Servicio id);
 
 	List<ServicioOfrecido> buscarPorProfesional(Profesional id);
+	
+	List<Servicio> buscarDistintosProfesional(Profesional profesional);
 }
 
 

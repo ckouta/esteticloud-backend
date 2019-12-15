@@ -27,7 +27,7 @@ public class BloqueHorarioController {
 	@Autowired
     private IHorarioProfesionalService horarioProfesionalService;
 	
-	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
 	@GetMapping(value = "/listar")
     public ResponseEntity<List<HorarioProfesional>> findAll() {
 		List<HorarioProfesional>lista = horarioProfesionalService.findAll();
@@ -43,7 +43,7 @@ public class BloqueHorarioController {
 		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
     }
 	
-	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
 	@GetMapping(value = "/listarbloque")
     public ResponseEntity<List<Bloque_horario>> findAllBloques() {
 		List<Bloque_horario>lista = bloqueService.findAll();
@@ -58,7 +58,7 @@ public class BloqueHorarioController {
 		}
 		return new ResponseEntity<List<Bloque_horario>>(lista, HttpStatus.OK); 
     }
-	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/save")
     public ResponseEntity<HorarioProfesional> create(@RequestBody HorarioProfesional cliente,BindingResult bindingResult){
 

@@ -24,6 +24,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         		.antMatchers(HttpMethod.GET,"/servicio/**").permitAll()
         		.antMatchers(HttpMethod.POST,"/horarioprofesional/lista").permitAll()
         		.antMatchers(HttpMethod.POST,"/cliente/usuario").permitAll()
+        		.antMatchers(HttpMethod.GET,"/ps/**").permitAll()
+        		.antMatchers(HttpMethod.POST,"/ps/listarPS").permitAll()
+        		.antMatchers(HttpMethod.POST,"/ps/listarSP").permitAll()
                 /*.antMatchers(HttpMethod.POST,"/saveTerrenos").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE,"/deleteTerreno/**").hasRole("ADMIN")
                 //agregar todas las rutas faltantes...

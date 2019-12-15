@@ -1,5 +1,6 @@
 package com.estetiCloud.Reserva;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.estetiCloud.Cliente.Cliente;
+import com.estetiCloud.HorarioProfesional.HorarioProfesional;
+import com.estetiCloud.HorarioProfesional.IHorarioProfesionalService;
 import com.estetiCloud.Role.IRoleService;
+import com.estetiCloud.ServicioOfrecido.ServicioOfrecido;
 import com.estetiCloud.Usuario.IUsuarioService;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -24,6 +29,8 @@ public class ReservaController {
 	
 	@Autowired
     private IReservaService reservaService;
+	@Autowired
+	private IHorarioProfesionalService horarioService;
 
 	/*lista todas las reservas*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
@@ -46,9 +53,11 @@ public class ReservaController {
         try {
         	reservaService.save(reserva);
         }catch(DataAccessException e) {
+
             return new ResponseEntity<Reserva>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<Reserva>(reserva,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Reserva>(reserva,HttpStatus.CREATED);
+
     }
 	
 	/*elimina resesrva*/
@@ -82,5 +91,25 @@ public class ReservaController {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 		
+    }
+	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
+	@PostMapping(value = "/listarRC")
+    public ResponseEntity<List<HorarioProfesional>> findOneCliente(@RequestBody Cliente cliente) {
+		List<HorarioProfesional> reservas = new ArrayList<HorarioProfesional>();
+		for(Reserva res : reservaService.findOneCliente(cliente)) {
+			
+			reservas.add(horarioService.findByReserva(res));
+		}
+
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (reservas.isEmpty()) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<List<HorarioProfesional>>(HttpStatus.NOT_FOUND);
+			
+		}
+		return new ResponseEntity<List<HorarioProfesional>>(reservas, HttpStatus.OK); 
     }
 }

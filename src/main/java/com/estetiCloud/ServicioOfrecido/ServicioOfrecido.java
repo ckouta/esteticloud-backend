@@ -22,15 +22,15 @@ public class ServicioOfrecido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_servicioOfrecido;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_estado_servicioOfrecido"),
     name = "id_estado_servicioOfrecido", referencedColumnName = "id_estado_servicioOfrecido")
 	private EstadoServicioOfrecido estado_servicioOfrecido;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Servicio servicio ;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Profesional profesional ;
 
 	

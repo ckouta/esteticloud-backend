@@ -102,5 +102,19 @@ public class HorarioProfesionalController {
 
     }
 
-	
+    @Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
+    @PostMapping(value = "/hora")
+    public ResponseEntity<HorarioProfesional> findbyReserva(@RequestBody Reserva reserva) {
+		HorarioProfesional horario = horarioService.findByReserva(reserva);
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (horario==null) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<HorarioProfesional>(HttpStatus.NOT_FOUND);
+			
+		}
+		return new ResponseEntity<HorarioProfesional>(horario, HttpStatus.OK); 
+    }
 }
