@@ -22,13 +22,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/profesional/**").permitAll()
         		.antMatchers(HttpMethod.GET,"/servicio/**").permitAll()
-        		.antMatchers(HttpMethod.POST,"/horarioprofesional/lista").permitAll()
         		.antMatchers(HttpMethod.POST,"/cliente/usuario").permitAll()
-        		.antMatchers(HttpMethod.GET,"/ps/**").permitAll()
-        		.antMatchers(HttpMethod.POST,"/ps/listarPS").permitAll()
-        		.antMatchers(HttpMethod.POST,"/ps/listarSP").permitAll()
-                /*.antMatchers(HttpMethod.POST,"/saveTerrenos").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE,"/deleteTerreno/**").hasRole("ADMIN")
+        		.antMatchers(HttpMethod.GET,"/so/**").permitAll()
+        		.antMatchers(HttpMethod.POST,"/so/por_profesional").permitAll()
+        		.antMatchers(HttpMethod.POST,"/so/profesional").permitAll()
                 //agregar todas las rutas faltantes...
                 //si tiene mas de un rol seria .hasAnyRole*/
                 .anyRequest().authenticated()

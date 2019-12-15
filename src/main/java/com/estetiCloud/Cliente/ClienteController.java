@@ -34,70 +34,60 @@ public class ClienteController {
 	@Autowired
     private IRoleService roleService;
 
+	/*retorna la lista de clientes*/
 	@Secured("ROLE_ESTETI")
-	@GetMapping(value = "/listar")
+	@GetMapping(value = "/")
     public ResponseEntity<List<Cliente>> findAll() {
-		List<Cliente>lista = clienteService.findAll();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
+		List<Cliente>lista = clienteService.findAll();		
     	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","No hay clientes para mostrar");
-    		
-			return new ResponseEntity<List<Cliente>>(lista,	HttpStatus.NOT_FOUND);
-			
+    		return new ResponseEntity<List<Cliente>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<Cliente>>(lista, HttpStatus.OK); 
     }
+	
+	/*encuentra los datos del cliente a travez de su correo*/
 	@Secured({"ROLE_ESTETI","ROLE_CLIENT"})
 	@GetMapping(value = "/{email}")
     public ResponseEntity<?> showCorreo(@PathVariable String email) {
-		Map<String,Object> response =new HashMap<String, Object>(); 
 		Cliente cliente = clienteService.findOneCorreo(email);
     	if (cliente==null ) {
-    		
-    		response.put("mensaje","no se encuentra el profesional");
-    		
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
-			
+			return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK); 
     }
+	
+	/*Guarda un cliente*/
 	@Secured("ROLE_ESTETI")
     @PostMapping(value= "/save")
     public ResponseEntity<Cliente> create(@RequestBody Cliente cliente,BindingResult bindingResult){
-
-
         try {
         	clienteService.save(cliente);
         }catch(DataAccessException e) {
-            return new ResponseEntity<Cliente>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<Cliente>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<Cliente>(HttpStatus.CREATED);
     }
+	
+	/*guarda un usuario y cliente*/
     @PostMapping(value= "/usuario")
     public ResponseEntity<Cliente> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
     	Role rol = roleService.findOne((long) 2);
-
-        try {
-        	
+        try {  	
         	clienteService.save(registro.getCliente());
         	registro.getUsuario().setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
         	registro.getUsuario().setEnable(true);
         	usuarioService.save(registro.getUsuario());
         	 usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
         }catch(DataAccessException e) {
-            return new ResponseEntity<Cliente>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<Cliente>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<Cliente>(HttpStatus.CREATED);
     }
 
+    /*elimina un cliente*/
     @Secured("ROLE_ESTETI")
-    @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
-
         Map<String,Object> response =new HashMap<String, Object>();
         try {
         	clienteService.delete(id);
@@ -106,41 +96,25 @@ public class ClienteController {
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         response.put("mensaje", "Eliminado con éxito!");
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-
     }
     
-    @Secured("ROLE_ESTETI")
+    /*actualiza un cliente*/
+    @Secured({"ROLE_ESTETI","ROLE_CLIENT"})
     @PutMapping(value ="/update/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Cliente cliente, @PathVariable Long id) {
     	Cliente Clienteactual=clienteService.findOne(id);
-    	
-
-        Map<String,Object> response =new HashMap<String, Object>();
-
         if(Clienteactual==null) {
-            response.put("mensaje","No se pudo editar, el funcionario con el ID: ".concat(id.toString().concat(" no existe en la base de datos")));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
-
-        	Clienteactual.setNombre(cliente.getNombre());
-        	Clienteactual.setApellido(cliente.getApellido());
-        	Clienteactual.setTelefono(cliente.getTelefono());
-        	Clienteactual.setEmail(cliente.getEmail());
         	clienteService.save(Clienteactual);
 
         }catch(DataAccessException e) {
-            response.put("mensaje", e.getMessage());
-            response.put("error",e.getStackTrace());
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        response.put("mensaje","El Cliente ha sido actualizado con éxito!");
-
-        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+        return new ResponseEntity<Map<String,Object>>(HttpStatus.OK);
 
     }
 }
