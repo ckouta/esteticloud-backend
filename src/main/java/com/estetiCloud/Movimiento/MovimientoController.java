@@ -1,14 +1,8 @@
 package com.estetiCloud.Movimiento;
 
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -29,109 +23,73 @@ public class MovimientoController {
 	
 	@Autowired
     private IMovimientoService movimientoService;
-	
+		
+	/*lista todos los movimientos*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-	@GetMapping(value = "/listar")
+	@GetMapping(value = "/")
     public ResponseEntity<List<Movimiento>> findAll() {
 		List<Movimiento>lista = movimientoService.findAll();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<Movimiento>>(HttpStatus.INTERNAL_SERVER_ERROR);
-			
+    	if (lista.isEmpty()) { 		
+			return new ResponseEntity<List<Movimiento>>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}
 		return new ResponseEntity<List<Movimiento>>(lista, HttpStatus.OK); 
     }
 
+	/*ver un movimiento con el id*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-
-	@GetMapping(value = "/movimiento/{id}")
+	@GetMapping(value = "/{id}")
     public ResponseEntity<?> show(@PathVariable long id) {
-		Map<String,Object> response =new HashMap<String, Object>(); 
 		Movimiento movimiento = movimientoService.findOne(id);
-    	if (movimiento==null ) {
-    		
-    		response.put("mensaje","no se encuentra el profesional");
-    		
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
-			
+    	if (movimiento==null ) {  		
+			return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);	
 		}
 		return new ResponseEntity<Movimiento>(movimiento, HttpStatus.OK); 
     }
 	
+	/*guardar un movimiento*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/save")
     public ResponseEntity<Movimiento> create(@RequestBody Movimiento movimiento){
-		
 		try {
-			movimientoService.save(movimiento);
-        	
+			movimientoService.save(movimiento);	
         }catch(DataAccessException e) {
-            return new ResponseEntity<Movimiento>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Movimiento>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<Movimiento>(movimiento,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Movimiento>(movimiento,HttpStatus.OK);
     }
 
+	/*Elimina un movimiento*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @RequestMapping(value = "/{id}",  method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
-
-        Map<String,Object> response =new HashMap<String, Object>();
         try {
         	movimientoService.delete(id);
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al eliminar el movimiento de la base de datos");
-            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        response.put("mensaje", "Eliminado con éxito!");
-        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+        return new ResponseEntity<Map<String,Object>>(HttpStatus.OK);
 
     }
-    
+	
+    /*actualiza un movimiento*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @PutMapping(value ="/update/{id}")
+    @PutMapping(value ="/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Movimiento movmiento, @PathVariable Long id) {
-		Movimiento movimientoactual=movimientoService.findOne(id);
-    	
-
-        Map<String,Object> response =new HashMap<String, Object>();
-
-        if(movimientoactual==null) {
-            response.put("mensaje","No se pudo editar : ".concat(id.toString().concat(" no existe.")));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
-        }
         try {
         	movimientoService.save(movmiento);
-
         }catch(DataAccessException e) {
-            response.put("mensaje", e.getMessage());
-            response.put("error",e.getStackTrace());
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        response.put("mensaje","Ha sido actualizado con éxito!");
-
-        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-
+        return new ResponseEntity<Map<String,Object>>(HttpStatus.OK);
     }
+	
+	/*encuentra todos los movimiento por profesional*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-	@PostMapping(value = "/listarProfesional")
+	@PostMapping(value = "/por_profesional")
     public ResponseEntity<List<Movimiento>> findbyProfesional(@RequestBody Profesional profesional) {
-		List<Movimiento>lista = movimientoService.buscarPorProfesional(profesional);
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<Movimiento>>(HttpStatus.NOT_FOUND);
-			
+		List<Movimiento>lista = movimientoService.buscarPorProfesional(profesional);		
+    	if (lista.isEmpty()) {		
+			return new ResponseEntity<List<Movimiento>>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}
 		return new ResponseEntity<List<Movimiento>>(lista, HttpStatus.OK); 
     }
