@@ -10,29 +10,34 @@ INSERT INTO profesional(apellido,email,nombre,telefono) VALUES ("Guzman, Adria M
 INSERT INTO profesional(apellido,email,nombre,telefono) VALUES ("Harvey, Thor B.","enim@aultricies.ca","Bevis","1-819-606-998");
 INSERT INTO profesional(apellido,email,nombre,telefono) VALUES ("Cantrell, Baker O.","Vivamus@Crasint.ca","Debra","1-521-178-719");
 
-INSERT INTO `estado_bloque`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_bloque`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_bloque`(`descripcion`, `nombre`) VALUES ("el bloque se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_bloque`(`descripcion`, `nombre`) VALUES ("el bloque se encuentra suspendido para su uso","desabilitado");
 
-INSERT INTO `estado_cliente`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_cliente`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_cliente`(`descripcion`, `nombre`) VALUES ("el cliente se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_cliente`(`descripcion`, `nombre`) VALUES ("el cliente se encuentra suspendido para su uso","desabilitado");
 
-INSERT INTO `estado_horario_profesional`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_horario_profesional`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_horario_profesional`(`descripcion`, `nombre`) VALUES ("el horario se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_horario_profesional`(`descripcion`, `nombre`) VALUES ("el horario se encuentra suspendido para su uso","desabilitado");
 
-INSERT INTO `estado_movimiento`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_movimiento`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_movimiento`(`descripcion`, `nombre`) VALUES ("el movimiento se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_movimiento`(`descripcion`, `nombre`) VALUES ("el movimiento se encuentra suspendido para su uso","desabilitado");
 
-INSERT INTO `estado_profesional`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_profesional`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_profesional`(`descripcion`, `nombre`) VALUES ("el profesional se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_profesional`(`descripcion`, `nombre`) VALUES ("el profesional se encuentra suspendido para su uso","desabilitado");
 
-INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("la reserva se encuentra agendada","agendada");
+INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("la reserva ya ha sido realizada","realizada");
+INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("la reserva fue cancelada por el cliente","cancelada por cliente");
+INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("la reserva fue cancelada opr el profesional","cancelada por profesional");
+INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("el cliente no llegó a la reserva","ausencia cliente");
+INSERT INTO `estado_reserva`(`descripcion`, `nombre`) VALUES ("la reserva ha sido eliminada","eliminada");
 
-INSERT INTO `estado_servicio`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_servicio`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
 
-INSERT INTO `estado_servicio_ofrecido`(`descripcion`, `nombre`) VALUES ("el estado se encuentro disponible para su uso","habilitado");
-INSERT INTO `estado_servicio_ofrecido`(`descripcion`, `nombre`) VALUES ("el estado se encuentro suspendido para su uso","desabilitado");
+INSERT INTO `estado_servicio`(`descripcion`, `nombre`) VALUES ("el servicio se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_servicio`(`descripcion`, `nombre`) VALUES ("el servicio se encuentra suspendido para su uso","desabilitado");
+
+INSERT INTO `estado_servicio_ofrecido`(`descripcion`, `nombre`) VALUES ("el servicio ofrecido se encuentra disponible para su uso","habilitado");
+INSERT INTO `estado_servicio_ofrecido`(`descripcion`, `nombre`) VALUES ("el servicio ofrecido se encuentra suspendido para su uso","desabilitado");
 
 
 INSERT INTO `bloque_horario` (`id_bloque`, `dia_semana`, `hora_fin`, `hora_inicio`, `id_estado_bloque`) VALUES(1, '0', '08:10', '08:00', 1);
