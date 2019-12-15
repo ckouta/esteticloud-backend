@@ -1,4 +1,4 @@
-package com.estetiCloud.ProfesionalServicio;
+package com.estetiCloud.ServicioOfrecido;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,50 +15,41 @@ import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Servicio.Servicio;
-import com.estetiCloud.ServicioOfrecido.IServicioOfrecidoService;
-import com.estetiCloud.ServicioOfrecido.ServicioOfrecido;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/ps")
+@RequestMapping("/so")
 
-public class ProfesionalServicioController {
+public class ServicioOfrecidoController {
 	
 	@Autowired
     private IServicioOfrecidoService servicioOfrecidoService;
 
-	
-	@GetMapping(value = "/listar")
+	/*listar servicios ofrecidos*/
+	@GetMapping(value = "/")
     public ResponseEntity<List<ServicioOfrecido>> findAll() {
 		List<ServicioOfrecido>lista = servicioOfrecidoService.findAll();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
     	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<ServicioOfrecido>>(HttpStatus.NOT_FOUND);
-			
+			return new ResponseEntity<List<ServicioOfrecido>>(HttpStatus.INTERNAL_SERVER_ERROR);	
 		}
 		return new ResponseEntity<List<ServicioOfrecido>>(lista, HttpStatus.OK); 
     }
 	
+	/*guardar servicio ofrecido*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @PostMapping(value= "/save")
+    @PostMapping(value= "/")
     public ResponseEntity<ServicioOfrecido> create(@RequestBody ServicioOfrecido servicioOfrecido,BindingResult bindingResult){
-
-
         try {
         	servicioOfrecidoService.save(servicioOfrecido);
         }catch(DataAccessException e) {
-            return new ResponseEntity<ServicioOfrecido>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<ServicioOfrecido>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<ServicioOfrecido>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<ServicioOfrecido>(HttpStatus.OK);
     }
 
+	/* eliminar servicio ofrecido*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @RequestMapping(value = "{id}",  method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
         Map<String,Object> response =new HashMap<String, Object>();
@@ -75,12 +66,16 @@ public class ProfesionalServicioController {
 
     }
     
-	@PostMapping(value = "/listarPS")
+	/*listar servicios ofrecido por un profesional*/
+	@PostMapping(value = "/por_profesional")
     public ResponseEntity<List<ServicioOfrecido>> findByServicio(@RequestBody Profesional profesional) {
 		List<ServicioOfrecido> aux = servicioOfrecidoService.buscarPorProfesional(profesional);
+		
 		return new ResponseEntity<List<ServicioOfrecido>>(aux, HttpStatus.OK); 
     }
-	@PostMapping(value = "/listarSP")
+	
+	/*lista los profesionales que realizan un servicio*/
+	@PostMapping(value = "/profesional")
     public ResponseEntity<List<Profesional>> findByServicio(@RequestBody Servicio servicio) {
 		List<Profesional> aux = new ArrayList<Profesional>();
     	for(ServicioOfrecido Servicio : servicioOfrecidoService.buscarPorServicio(servicio)) {
@@ -88,18 +83,12 @@ public class ProfesionalServicioController {
 		}
 		return new ResponseEntity<List<Profesional>>(aux, HttpStatus.OK); 
     }
+	
+	/*listar los servicios que no tienen un profesional asignado*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-	@PostMapping(value = "/listarSNO")
+	@PostMapping(value = "/sin_profesional")
     public ResponseEntity<List<Servicio>> findByNotProfesional(@RequestBody Profesional profesional) {
 		List<Servicio>lista = servicioOfrecidoService.buscarDistintosProfesional(profesional);
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<Servicio>>(HttpStatus.NOT_FOUND);
-			
-		}
 		return new ResponseEntity<List<Servicio>>(lista, HttpStatus.OK); 
     }
 }
