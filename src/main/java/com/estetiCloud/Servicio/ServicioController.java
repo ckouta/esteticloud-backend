@@ -36,10 +36,13 @@ public class ServicioController {
 	/*lista todos los servicios*/
 	@GetMapping(value = "/")
     public ResponseEntity<List<Servicio>> findAll() {
-		List<Servicio>lista = servicioService.findAll();		
-    	if (lista.isEmpty()) {
+		List<Servicio>lista;
+		try {
+			lista = servicioService.findAll();		
+		}catch (Exception e) {
 			return new ResponseEntity<List<Servicio>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+
 		return new ResponseEntity<List<Servicio>>(lista, HttpStatus.OK); 
     }
 	
@@ -60,7 +63,6 @@ public class ServicioController {
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/save")
     public ResponseEntity<Servicio> create(@RequestBody Servicio servicio ){
-
 
         try {
         	servicioService.save(servicio);

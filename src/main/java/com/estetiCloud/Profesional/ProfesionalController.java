@@ -46,90 +46,63 @@ public class ProfesionalController {
 	@Autowired
 	private IEstadoProfesionalService estadoProfService;
 
-
-	@GetMapping(value = "/listar")
+	/*lista todos los profesionales*/
+	@GetMapping(value = "/")
     public ResponseEntity<List<Profesional>> findAll() {
-		List<Profesional>lista = profesionalService.findAll();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<Profesional>>(HttpStatus.NO_CONTENT);
-			
+		List<Profesional> lista;
+		try {
+			lista = profesionalService.findAll();
+		}catch (Exception e) {
+			return new ResponseEntity<List<Profesional>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<Profesional>>(lista, HttpStatus.OK); 
     }
 	
-	
-	@GetMapping(value = "/profesional/{id}")
+	/*ver un profesional*/
+	@GetMapping(value = "/{id}")
     public ResponseEntity<?> show(@PathVariable long id) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		Profesional profesional = profesionalService.findOne(id);
-    	if (profesional==null ) {
-    		
+    	if (profesional==null ) {	
     		response.put("mensaje","no se encuentra el profesional");
-    		
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
-			
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Profesional>(profesional, HttpStatus.OK); 
     }
 	
-	
+	/*busca profesional por email*/
 	@GetMapping(value = "/{email}")
     public ResponseEntity<?> showCorreo(@PathVariable String email) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		Profesional profesional = profesionalService.findOneCorreo(email);
     	if (profesional==null ) {
-    		
     		response.put("mensaje","no se encuentra el profesional");
-    		
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
-			
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Profesional>(profesional, HttpStatus.OK); 
     }
-	/*probando*/
-	@GetMapping(value = "/listaEstadoProfesional")
-    public ResponseEntity<List<EstadoProfesional>> findAllEstado() {
-		List<EstadoProfesional>lista = profesionalService.findAllEstado();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
-    	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<EstadoProfesional>>(HttpStatus.NOT_FOUND);
-			
-		}
-		return new ResponseEntity<List<EstadoProfesional>>(lista, HttpStatus.OK); 
-    }
 	
+	/*crear profesional*/
 	@Secured("ROLE_ADMIN")
-    @PostMapping(value= "/save")
+    @PostMapping(value= "/")
     public ResponseEntity<Profesional> create(@RequestBody Profesional profesional){
-        
 		try {
-			
 			profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
         	profesionalService.save(profesional);
         	
         }catch(DataAccessException e) {
-            return new ResponseEntity<Profesional>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Profesional>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<Profesional>(profesional,HttpStatus.CREATED);
     }
 	
-	
+	/*crea el profesional y el usuario*/
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value= "/usuario")
     public ResponseEntity<Profesional> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
     	Role rol = roleService.findOne((long) 3);
     	Profesional profesional = registro.getProfesional();
-
         try {
         	profesional.setEstado_profesional(estadoProfService.findOne((long) 1));// se le da el estado habilitado
         	profesionalService.save(profesional);
@@ -138,15 +111,15 @@ public class ProfesionalController {
         	usuarioService.save(registro.getUsuario());
         	 usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
         }catch(DataAccessException e) {
-            return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Profesional>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<Profesional>(profesional,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Profesional>(profesional,HttpStatus.CREATED);
     }
+	
+	/*guarda la imagen del profesional*/
 	@Secured("ROLE_ADMIN")
     @PostMapping(value= "/saveimagen")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo ,@RequestParam("id") Long id ){
-        
 		try {
 			Profesional profesional = profesionalService.findOne(id);
 			System.out.print(profesional.toString());
@@ -155,7 +128,6 @@ public class ProfesionalController {
         		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
         		Files.copy(archivo.getInputStream(), rutaArchivo);
         		String nombreFotoAnterior = profesional.getFoto();
-        		
                 if(nombreFotoAnterior != null &&  nombreFotoAnterior.length() >0) {
                 	Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
                 	File archivoFotoAnterior = rutaFotoAnterior.toFile();
@@ -166,65 +138,41 @@ public class ProfesionalController {
         		profesional.setFoto(nombreArchivo);
         		profesionalService.save(profesional);
         	}
-        	
-        	
         }catch(DataAccessException e) {
-            return new ResponseEntity<Profesional>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Profesional>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
 			e.printStackTrace();
 		}
 
-        return new ResponseEntity<Profesional>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<Profesional>(HttpStatus.OK);
     }
 
+	/*elimina un profesional por id*/
 	@Secured("ROLE_ADMIN")
-    @RequestMapping(value = "/{id}",  method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
-        Map<String,Object> response =new HashMap<String, Object>();
         try {
         	profesionalService.delete(id);
         }catch(DataAccessException e) {
-            response.put("mensaje","Error al eliminar el profesional de la base de datos");
-            response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        response.put("mensaje", "Eliminado con éxito!");
-        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-
+        return new ResponseEntity<Map<String,Object>>(HttpStatus.OK);
     }
     
+	/*actualiza un profesional por id*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @PutMapping(value ="/update/{id}")
+    @PutMapping(value ="/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Profesional profesional, @PathVariable Long id) {
     	Profesional ProfesionalActual=profesionalService.findOne(id);
-    	
-
-        Map<String,Object> response =new HashMap<String, Object>();
-
         if(ProfesionalActual==null) {
-            response.put("mensaje","No se pudo editar : ".concat(id.toString().concat(" no existe.")));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+           return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
-        	ProfesionalActual.setId_profesional(profesional.getId_profesional());
-        	ProfesionalActual.setNombre(profesional.getNombre());
-        	ProfesionalActual.setApellido(profesional.getApellido());
-        	ProfesionalActual.setTelefono(profesional.getTelefono());
-        	ProfesionalActual.setEmail(profesional.getEmail());
         	profesionalService.save(ProfesionalActual);
-
-        }catch(DataAccessException e) {
-            response.put("mensaje", e.getMessage());
-            response.put("error",e.getStackTrace());
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        response.put("mensaje","Ha sido actualizado con éxito!");
-
-        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-
- 
+        }catch (Exception e) {
+			return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+        return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
