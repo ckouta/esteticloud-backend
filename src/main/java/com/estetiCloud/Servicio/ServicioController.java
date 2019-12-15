@@ -33,34 +33,30 @@ public class ServicioController {
 	@Autowired
     private IServicioService servicioService;
 
-	@GetMapping(value = "/listar")
+	/*lista todos los servicios*/
+	@GetMapping(value = "/")
     public ResponseEntity<List<Servicio>> findAll() {
-		List<Servicio>lista = servicioService.findAll();
-		Map<String,Object> response =new HashMap<String, Object>(); 
-		
+		List<Servicio>lista = servicioService.findAll();		
     	if (lista.isEmpty()) {
-    		
-    		response.put("mensaje","no hay lista ");
-    		
-			return new ResponseEntity<List<Servicio>>(HttpStatus.NOT_FOUND);
-			
+			return new ResponseEntity<List<Servicio>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<Servicio>>(lista, HttpStatus.OK); 
     }
 	
-	@GetMapping(value = "/servicio/{id}")
+	/*encuentra el servicio por id*/
+	@GetMapping(value = "/{id}")
     public ResponseEntity<?> show(@PathVariable long id) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		Servicio servicio = servicioService.findOne(id);
-    	if (servicio==null ) {
-    		
-    		response.put("mensaje","no se encuentra el servicio");
-    		
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+    	if (servicio==null ) {    		
+    		response.put("mensaje","no se encuentra el servicio");	
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 		return new ResponseEntity<Servicio>(servicio, HttpStatus.OK); 
     }
+	
+	/*crea un servicio*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/save")
     public ResponseEntity<Servicio> create(@RequestBody Servicio servicio ){
@@ -68,13 +64,13 @@ public class ServicioController {
 
         try {
         	servicioService.save(servicio);
-        	
         }catch(DataAccessException e) {
-            return new ResponseEntity<Servicio>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<Servicio>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<Servicio>(servicio,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Servicio>(HttpStatus.CREATED);
     }
+        
+    /*guarda una imagen*/    
     @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
     @PostMapping(value= "/saveimagen")
     public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo,@RequestParam("id") Long id ){
@@ -101,43 +97,37 @@ public class ServicioController {
         	}
         } catch (IOException e) {
         	response.put("mensaje","no se logro agragar la imagen ");
-        	return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CONFLICT);
+        	return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
         response.put("mensaje","correctamente la foto " + nombreArchivo);
-        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.ACCEPTED);
+        return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
     }
 
+    /*elimina un servicio*/
     @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @RequestMapping(value = "/delete/{id}",  method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
-
         Map<String,Object> response =new HashMap<String, Object>();
         try {
-        	Servicio ServicioActual=servicioService.findOne(id);
-        	
         	servicioService.delete(id);
         }catch(DataAccessException e) {
             response.put("mensaje","Error al eliminar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         response.put("mensaje", "Eliminado con éxito!");
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-
     }
     
+    /*Actualiza un servicio*/
     @Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @PutMapping(value ="/update/{id}")
+    @PutMapping(value ="/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Servicio servicio, @PathVariable Long id) {
     	Servicio ServicioActual=servicioService.findOne(id);
-    	
-
         Map<String,Object> response =new HashMap<String, Object>();
-
         if(ServicioActual==null) {
             response.put("mensaje","No se pudo editar,  ID: ".concat(id.toString().concat(" no existe.")));
-            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
         	ServicioActual.setId_servicio(servicio.getId_servicio());
@@ -145,22 +135,18 @@ public class ServicioController {
         	ServicioActual.setDuracion(servicio.getDuracion());
         	ServicioActual.setPrecio(servicio.getPrecio());
         	servicioService.save(ServicioActual);
-
         }catch(DataAccessException e) {
             response.put("mensaje","Error al actualizar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         response.put("mensaje","Ha sido actualizado con éxito!");
-
         return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-
     }
 
+    /*ver foto del servicio*/
     @GetMapping("uploads/img/{nombreFoto:.+}")
     public  ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
-    	
     	Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
     	Resource recurso = null;
     	try {

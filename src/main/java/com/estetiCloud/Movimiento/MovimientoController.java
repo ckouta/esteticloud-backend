@@ -40,12 +40,14 @@ public class MovimientoController {
     		
     		response.put("mensaje","no hay lista ");
     		
-			return new ResponseEntity<List<Movimiento>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Movimiento>>(HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 		return new ResponseEntity<List<Movimiento>>(lista, HttpStatus.OK); 
     }
+
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
+
 	@GetMapping(value = "/movimiento/{id}")
     public ResponseEntity<?> show(@PathVariable long id) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
