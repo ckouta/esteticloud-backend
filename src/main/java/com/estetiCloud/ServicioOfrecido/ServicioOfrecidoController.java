@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Servicio.Servicio;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://parra.chillan.ubiobio.cl:8090/~alvaro.castillo1501/esteticloud-frontend")
 @RestController
 @RequestMapping("/so")
 

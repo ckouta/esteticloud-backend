@@ -15,7 +15,7 @@ import com.estetiCloud.Profesional.Profesional;
 
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://parra.chillan.ubiobio.cl:8090/~alvaro.castillo1501/esteticloud-frontend")
 @RestController
 @RequestMapping("/movimiento")
 

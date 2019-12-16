@@ -16,7 +16,7 @@ import com.estetiCloud.HorarioProfesional.HorarioProfesional;
 import com.estetiCloud.HorarioProfesional.IHorarioProfesionalService;
 import com.estetiCloud.Varios.RangoHora;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://parra.chillan.ubiobio.cl:8090/~alvaro.castillo1501/esteticloud-frontend")
 @RestController
 @RequestMapping("/bloque")
 

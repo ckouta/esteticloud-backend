@@ -26,7 +26,7 @@ import com.estetiCloud.Role.Role;
 import com.estetiCloud.Usuario.IUsuarioService;
 import com.estetiCloud.Varios.Registro;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://parra.chillan.ubiobio.cl:8090/~alvaro.castillo1501/esteticloud-frontend")
 @RestController
 @RequestMapping("/profesional")
 
