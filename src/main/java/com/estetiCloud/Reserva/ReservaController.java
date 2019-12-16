@@ -21,7 +21,7 @@ import com.estetiCloud.Role.IRoleService;
 import com.estetiCloud.ServicioOfrecido.ServicioOfrecido;
 import com.estetiCloud.Usuario.IUsuarioService;
 
-@CrossOrigin(origins = "http://parra.chillan.ubiobio.cl:8090/~alvaro.castillo1501/esteticloud-frontend")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/reserva")
 
