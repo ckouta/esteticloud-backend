@@ -71,7 +71,7 @@ public class ProfesionalController {
     }
 	
 	/*busca profesional por email*/
-	@GetMapping(value = "/{email}")
+	@GetMapping(value = "/p/{email}")
     public ResponseEntity<?> showCorreo(@PathVariable String email) {
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		Profesional profesional = profesionalService.findOneCorreo(email);
@@ -125,11 +125,11 @@ public class ProfesionalController {
 			System.out.print(profesional.toString());
         	if(!archivo.isEmpty()) {
         		String nombreArchivo = UUID.randomUUID().toString()+"_"+ archivo.getOriginalFilename().replace(" ","");
-        		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+        		Path rutaArchivo = Paths.get("home/alvaro.castillo1501/uploads").resolve(nombreArchivo).toAbsolutePath();
         		Files.copy(archivo.getInputStream(), rutaArchivo);
         		String nombreFotoAnterior = profesional.getFoto();
                 if(nombreFotoAnterior != null &&  nombreFotoAnterior.length() >0) {
-                	Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+                	Path rutaFotoAnterior = Paths.get("home/alvaro.castillo1501/uploads").resolve(nombreFotoAnterior).toAbsolutePath();
                 	File archivoFotoAnterior = rutaFotoAnterior.toFile();
                 	if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
                 		archivoFotoAnterior.delete();

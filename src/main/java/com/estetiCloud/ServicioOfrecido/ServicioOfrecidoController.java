@@ -37,7 +37,7 @@ public class ServicioOfrecidoController {
 	
 	/*guardar servicio ofrecido*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
-    @PostMapping(value= "/")
+    @PostMapping(value= "/save")
     public ResponseEntity<ServicioOfrecido> create(@RequestBody ServicioOfrecido servicioOfrecido,BindingResult bindingResult){
         try {
         	servicioOfrecidoService.save(servicioOfrecido);

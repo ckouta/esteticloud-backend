@@ -24,6 +24,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import net.bytebuddy.asm.Advice.This;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/servicio")
@@ -69,7 +71,7 @@ public class ServicioController {
         }catch(DataAccessException e) {
             return new ResponseEntity<Servicio>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<Servicio>(HttpStatus.CREATED);
+        return new ResponseEntity<Servicio>(servicio,HttpStatus.CREATED);
     }
         
     /*guarda una imagen*/    
@@ -82,13 +84,13 @@ public class ServicioController {
         try {
         	if(!archivo.isEmpty()) {
         		nombreArchivo = UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename();
-        		Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+        		Path rutaArchivo = Paths.get("home/alvaro.castillo1501/uploads").resolve(nombreArchivo).toAbsolutePath();
         		Files.copy(archivo.getInputStream(), rutaArchivo);
         		
         		String nombreFotoAnterior = servicio.getFoto();
         		
                 if(nombreFotoAnterior != null &&  nombreFotoAnterior.length() >0) {
-                	Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
+                	Path rutaFotoAnterior = Paths.get("home/alvaro.castillo1501/uploads").resolve(nombreFotoAnterior).toAbsolutePath();
                 	File archivoFotoAnterior = rutaFotoAnterior.toFile();
                 	if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
                 		archivoFotoAnterior.delete();
@@ -98,7 +100,7 @@ public class ServicioController {
                 servicioService.save(servicio);
         	}
         } catch (IOException e) {
-        	response.put("mensaje","no se logro agragar la imagen ");
+        	response.put("mensaje","no se logro agregar la imagen ");
         	return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
         response.put("mensaje","correctamente la foto " + nombreArchivo);
@@ -149,7 +151,9 @@ public class ServicioController {
     /*ver foto del servicio*/
     @GetMapping("uploads/img/{nombreFoto:.+}")
     public  ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
-    	Path rutaArchivo = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
+    	Path rutaArchivo = Paths.get("home/alvaro.castillo1501/uploads").resolve(nombreFoto).toAbsolutePath();
+    	System.out.println("####"+this.getClass().getClassLoader().getResource("").getPath());
+		System.out.println("####"+rutaArchivo.toString());
     	Resource recurso = null;
     	try {
 			recurso =  new UrlResource(rutaArchivo.toUri());

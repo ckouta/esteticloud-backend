@@ -31,6 +31,8 @@ public class ReservaController {
     private IReservaService reservaService;
 	@Autowired
 	private IHorarioProfesionalService horarioService;
+	@Autowired
+	private IEstadoReservaService estadoReserService;
 
 	/*lista todas las reservas*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
@@ -51,7 +53,9 @@ public class ReservaController {
     @PostMapping(value= "/save")
     public ResponseEntity<Reserva> create(@RequestBody Reserva reserva,BindingResult bindingResult){
         try {
+        	reserva.setEstado_reserva(estadoReserService.findOne((long) 1));
         	reservaService.save(reserva);
+        
         }catch(DataAccessException e) {
 
             return new ResponseEntity<Reserva>(HttpStatus.INTERNAL_SERVER_ERROR);
