@@ -1,8 +1,10 @@
 package com.estetiCloud.Movimiento;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.estetiCloud.Profesional.Profesional;
+import com.estetiCloud.Varios.IntervaloFecha;
 
 public interface IMovimientoService {
 
@@ -15,5 +17,7 @@ public interface IMovimientoService {
 	void delete(Long id);
 	
 	List<Movimiento> buscarPorProfesional(Profesional profesional);
+	
+	List<Object> findFechaMovimiento(IntervaloFecha fecha);
 
 }

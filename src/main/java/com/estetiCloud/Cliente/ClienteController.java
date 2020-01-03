@@ -109,6 +109,9 @@ public class ClienteController {
             return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
+        	Clienteactual.setApellido(cliente.getApellido());
+        	Clienteactual.setNombre(cliente.getNombre());
+        	Clienteactual.setTelefono(cliente.getTelefono());
         	clienteService.save(Clienteactual);
 
         }catch(DataAccessException e) {

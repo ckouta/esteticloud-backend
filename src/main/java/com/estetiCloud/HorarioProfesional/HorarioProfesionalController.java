@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Reserva.Reserva;
+import com.estetiCloud.Varios.IntervaloFecha;
 import com.estetiCloud.Varios.RangoFecha;
 
 @CrossOrigin(origins = "*")
@@ -44,6 +45,71 @@ public class HorarioProfesionalController {
 			
 		}
 		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
+    }
+	
+	/*encuentra el top de servicios mas utilizados*/
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value = "/topServicio")
+    public ResponseEntity<List<Object>> topServicio(@RequestBody IntervaloFecha fecha) {
+		List<Object>lista = horarioService.findTopServicios(fecha);
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (lista.isEmpty()) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<List<Object>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<List<Object>>(lista, HttpStatus.OK); 
+    }
+	/*encuentra el top de profesionales*/
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value = "/topProfesional")
+    public ResponseEntity<List<Object>> topProfesional(@RequestBody IntervaloFecha fecha) {
+		List<Object>lista = horarioService.findTopProfesional(fecha);
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (lista.isEmpty()) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<List<Object>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<List<Object>>(lista, HttpStatus.OK); 
+    }
+	/*encuentra el top de reservas ordenados por estados*/
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value = "/topReservas")
+    public ResponseEntity<List<Object>> topReserva(@RequestBody IntervaloFecha fecha) {
+		List<Object>lista = horarioService.findTopReservas(fecha);
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (lista.isEmpty()) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<List<Object>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<List<Object>>(lista, HttpStatus.OK); 
+    }
+	/*encuentro el top de servicios mas utilizados*/
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value = "/topCliente")
+    public ResponseEntity<List<Object>> topCliente(@RequestBody IntervaloFecha fecha) {
+		List<Object>lista = horarioService.findTopClientes(fecha);
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		
+    	if (lista.isEmpty()) {
+    		
+    		response.put("mensaje","No hay clientes para mostrar");
+    		
+			return new ResponseEntity<List<Object>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<List<Object>>(lista, HttpStatus.OK); 
     }
 	/*Guarda un rango de horario*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})

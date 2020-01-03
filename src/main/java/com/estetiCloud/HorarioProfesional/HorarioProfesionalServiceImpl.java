@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import com.estetiCloud.BloqueHorario.IBloqueHorarioService;
 import com.estetiCloud.Profesional.IProfesionalService;
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Reserva.Reserva;
+import com.estetiCloud.Varios.IntervaloFecha;
 import com.estetiCloud.Varios.RangoFecha;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +100,27 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 	public HorarioProfesional findByReserva(Reserva reserva) {
 		List<HorarioProfesional> lista = horarioProfesionalDao.findByReserva(reserva);
 		return lista.get(0);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Object> findTopServicios (IntervaloFecha fecha){
+		
+		return horarioProfesionalDao.findTopServicios(LocalDate.parse(fecha.getFechaInicio()),LocalDate.parse(fecha.getFechaFin()));
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Object> findTopReservas (IntervaloFecha fecha){
+		
+		return horarioProfesionalDao.findTopReservas(LocalDate.parse(fecha.getFechaInicio()),LocalDate.parse(fecha.getFechaFin()));
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Object> findTopClientes (IntervaloFecha fecha){
+	return horarioProfesionalDao.findTopClientes(LocalDate.parse(fecha.getFechaInicio()),LocalDate.parse(fecha.getFechaFin()));
+	}
+	@Transactional(readOnly=true)
+	public List<Object> findTopProfesional (IntervaloFecha fecha){
+	return horarioProfesionalDao.findTopProfesional(LocalDate.parse(fecha.getFechaInicio()),LocalDate.parse(fecha.getFechaFin()));
 	}
 
 }

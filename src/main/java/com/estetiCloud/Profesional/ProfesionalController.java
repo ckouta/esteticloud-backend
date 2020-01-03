@@ -169,6 +169,11 @@ public class ProfesionalController {
            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
+        	ProfesionalActual.setNombre(profesional.getNombre());
+        	ProfesionalActual.setApellido(profesional.getApellido());
+        	ProfesionalActual.setDescripcion(profesional.getDescripcion());
+        	ProfesionalActual.setTelefono(profesional.getTelefono());
+        	ProfesionalActual.setRut(profesional.getRut());
         	profesionalService.save(ProfesionalActual);
         }catch (Exception e) {
 			return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,11 +1,14 @@
 package com.estetiCloud.Movimiento;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.ServicioOfrecido.ServicioOfrecido;
+import com.estetiCloud.Varios.IntervaloFecha;
+import com.estetiCloud.Varios.RangoFecha;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +41,11 @@ public class MovimientoServiceImpl implements IMovimientoService {
 	public List<Movimiento> buscarPorProfesional(Profesional profesional) {
 		// TODO Auto-generaMOvited method stub
 		return movimientoDao.findByProfesional(profesional);
+	}
+
+	@Transactional(readOnly=true)
+	public List<Object> findFechaMovimiento(IntervaloFecha fecha) {
+		// TODO Auto-generated method stub
+		return movimientoDao.findFechaMovimientos(LocalDate.parse(fecha.getFechaInicio()), LocalDate.parse(fecha.getFechaFin()));
 	}
 }

@@ -28,10 +28,9 @@ public class Movimiento {
 	@NotNull
 	private Integer valor;
 	
-	
-	@Temporal(TemporalType.DATE)
+	@NotNull
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date fecha;
+	private LocalDate fecha;
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_profesional"),
@@ -46,7 +45,7 @@ public class Movimiento {
 	
 
 	public Movimiento(Long id_movimiento, @NotEmpty String nombre, @NotEmpty String descripcion,
-			@NotEmpty Integer valor, @NotEmpty Date fecha, Profesional profesional,
+			@NotEmpty Integer valor, @NotEmpty LocalDate fecha, Profesional profesional,
 			com.estetiCloud.Movimiento.EstadoMovimiento estado_movimiento) {
 		super();
 		this.id_movimiento = id_movimiento;
@@ -94,11 +93,11 @@ public class Movimiento {
 		this.valor = valor;
 	}
 
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

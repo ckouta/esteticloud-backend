@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.Profesional.Profesional;
+import com.estetiCloud.Varios.IntervaloFecha;
 
 
 
@@ -33,6 +34,16 @@ public class MovimientoController {
 			return new ResponseEntity<List<Movimiento>>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}
 		return new ResponseEntity<List<Movimiento>>(lista, HttpStatus.OK); 
+    }
+	/*realizar consulta de movimientos por intervalo de tiempo*/
+	@Secured("ROLE_ADMIN")
+	@PostMapping(value = "/fechas")
+    public ResponseEntity<List<Object>> findFechaMovimiento(@RequestBody  IntervaloFecha fecha) {
+		List<Object>lista = movimientoService.findFechaMovimiento(fecha);
+    	if (lista.isEmpty()) { 		
+			return new ResponseEntity<List<Object>>(HttpStatus.INTERNAL_SERVER_ERROR);		
+		}
+		return new ResponseEntity<List<Object>>(lista, HttpStatus.OK); 
     }
 
 	/*ver un movimiento con el id*/
