@@ -96,8 +96,10 @@ public class ReservaController {
 		return new ResponseEntity<>(HttpStatus.OK);
 		
     }
+	
+	/*listar reserva por cliente*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
-	@PostMapping(value = "/listarRC")
+	@PostMapping(value = "/por_cliente")
     public ResponseEntity<List<HorarioProfesional>> findOneCliente(@RequestBody Cliente cliente) {
 		List<HorarioProfesional> reservas = new ArrayList<HorarioProfesional>();
 		for(Reserva res : reservaService.findOneCliente(cliente)) {
