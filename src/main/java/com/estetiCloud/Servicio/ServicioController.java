@@ -34,6 +34,8 @@ public class ServicioController {
 	
 	@Autowired
     private IServicioService servicioService;
+	@Autowired
+    private IEstadoServicioDao estadoServicio;
 
 	/*lista todos los servicios*/
 	@GetMapping(value = "/")
@@ -67,6 +69,7 @@ public class ServicioController {
     public ResponseEntity<Servicio> create(@RequestBody Servicio servicio ){
 
         try {
+        	servicio.setEstado_servicio(estadoServicio.findById(1L).orElse(null));
         	servicioService.save(servicio);
         }catch(DataAccessException e) {
             return new ResponseEntity<Servicio>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -113,7 +116,9 @@ public class ServicioController {
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         Map<String,Object> response =new HashMap<String, Object>();
         try {
-        	servicioService.delete(id);
+        	Servicio servicio = servicioService.findOne(id);
+        	servicio.setEstado_servicio(estadoServicio.findById(2L).orElse(null));
+        	//servicioService.delete(id);
         }catch(DataAccessException e) {
             response.put("mensaje","Error al eliminar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

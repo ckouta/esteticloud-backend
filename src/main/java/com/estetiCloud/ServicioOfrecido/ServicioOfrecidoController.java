@@ -24,6 +24,8 @@ public class ServicioOfrecidoController {
 	
 	@Autowired
     private IServicioOfrecidoService servicioOfrecidoService;
+	@Autowired
+    private IEstadoServicioOfrecidoDao estadoServicioOfrecido;
 
 	/*listar servicios ofrecidos*/
 	@GetMapping(value = "/")
@@ -40,6 +42,7 @@ public class ServicioOfrecidoController {
     @PostMapping(value= "/save")
     public ResponseEntity<ServicioOfrecido> create(@RequestBody ServicioOfrecido servicioOfrecido,BindingResult bindingResult){
         try {
+        	servicioOfrecido.setEstado_servicioOfrecido(estadoServicioOfrecido.findById(1L).orElse(null));
         	servicioOfrecidoService.save(servicioOfrecido);
         }catch(DataAccessException e) {
             return new ResponseEntity<ServicioOfrecido>(HttpStatus.INTERNAL_SERVER_ERROR);

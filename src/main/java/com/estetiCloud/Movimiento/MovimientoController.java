@@ -24,6 +24,8 @@ public class MovimientoController {
 	
 	@Autowired
     private IMovimientoService movimientoService;
+	@Autowired
+    private IEstadoMovimientoDao estadoMovimiento;
 		
 	/*lista todos los movimientos*/
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
@@ -62,6 +64,7 @@ public class MovimientoController {
     @PostMapping(value= "/save")
     public ResponseEntity<Movimiento> create(@RequestBody Movimiento movimiento){
 		try {
+			movimiento.setEstado_movimiento(estadoMovimiento.findById(1L).orElse(null));
 			movimientoService.save(movimiento);	
         }catch(DataAccessException e) {
             return new ResponseEntity<Movimiento>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -74,7 +77,10 @@ public class MovimientoController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         try {
-        	movimientoService.delete(id);
+        	Movimiento movimiento = movimientoService.findOne(id);
+        	movimiento.setEstado_movimiento(estadoMovimiento.findById(2L).orElse(null));
+        	movimientoService.save(movimiento);
+        	//movimientoService.delete(id);
         }catch(DataAccessException e) {
             return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

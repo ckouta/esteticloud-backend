@@ -28,6 +28,8 @@ public class ClienteController {
 	@Autowired
     private IClienteService clienteService;
 	@Autowired
+    private IEstadoClienteDao estadoClienteService;
+	@Autowired
     private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private IUsuarioService usuarioService;
@@ -61,6 +63,8 @@ public class ClienteController {
     @PostMapping(value= "/save")
     public ResponseEntity<Cliente> create(@RequestBody Cliente cliente,BindingResult bindingResult){
         try {
+        	EstadoCliente estado = estadoClienteService.findById(1L).orElse(null);
+        	cliente.setEstado_cliente(estado);
         	clienteService.save(cliente);
         }catch(DataAccessException e) {
             return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -90,7 +94,10 @@ public class ClienteController {
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
         Map<String,Object> response =new HashMap<String, Object>();
         try {
-        	clienteService.delete(id);
+        	Cliente cliente= clienteService.findOne(id);
+        	cliente.setEstado_cliente(estadoClienteService.findById(2L).orElse(null));
+        	clienteService.save(cliente);
+        	//clienteService.delete(id);
         }catch(DataAccessException e) {
             response.put("mensaje","Error al eliminar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

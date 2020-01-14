@@ -67,11 +67,14 @@ public class ReservaController {
 	/*elimina resesrva*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id, @PathVariable Long id_estado) {
 
         Map<String,Object> response =new HashMap<String, Object>();
         try {
-        	reservaService.delete(id);
+        	Reserva reserva = reservaService.findOne(id);
+        	EstadoReserva estado = estadoReserService.findOne(id_estado);
+        	reserva.setEstado_reserva(estado);
+        	//reservaService.delete(id);
         }catch(DataAccessException e) {
             response.put("mensaje","Error al eliminar");
             response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -84,18 +87,20 @@ public class ReservaController {
     }
     
     /*actualiza reserva */
-	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
+	/*@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
     @PutMapping(value ="/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Reserva reserva, @PathVariable Long id) {
 
 		try {
-			reservaService.save(reserva);
+			Reserva reservaActualizar = reservaService.findOne(id);
+			reservaService.save(reservaActualizar);
+			
 		}catch(Exception e){
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 		
-    }
+    }*/
 	
 	/*listar reserva por cliente*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
