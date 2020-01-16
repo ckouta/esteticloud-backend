@@ -10,16 +10,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.Cliente.Cliente;
 import com.estetiCloud.HorarioProfesional.HorarioProfesional;
 import com.estetiCloud.HorarioProfesional.IHorarioProfesionalService;
-import com.estetiCloud.Role.IRoleService;
-import com.estetiCloud.ServicioOfrecido.ServicioOfrecido;
-import com.estetiCloud.Usuario.IUsuarioService;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -47,6 +43,18 @@ public class ReservaController {
 		}
 		return new ResponseEntity<List<Reserva>>(lista, HttpStatus.OK); 
     }
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
+	@GetMapping(value = "/estado")
+    public ResponseEntity<List<EstadoReserva>> findAllEstado() {
+		List<EstadoReserva>lista = estadoReserService.findAll();
+		Map<String,Object> response =new HashMap<String, Object>(); 
+    	if (lista.isEmpty()) {
+    		response.put("mensaje","No hay reservas para mostrar");
+			return new ResponseEntity<List<EstadoReserva>>(lista,	HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<List<EstadoReserva>>(lista, HttpStatus.OK); 
+    }
 	
 	/*guarda reserva*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
@@ -64,7 +72,7 @@ public class ReservaController {
 
     }
 	
-	/*elimina resesrva*/
+	/*elimina reserva*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id, @PathVariable Long id_estado) {
@@ -87,12 +95,13 @@ public class ReservaController {
     }
     
     /*actualiza reserva */
-	/*@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
+	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
     @PutMapping(value ="/{id}")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Reserva reserva, @PathVariable Long id) {
 
 		try {
 			Reserva reservaActualizar = reservaService.findOne(id);
+			reservaActualizar.setEstado_reserva(reserva.getEstado_reserva());
 			reservaService.save(reservaActualizar);
 			
 		}catch(Exception e){
@@ -100,7 +109,7 @@ public class ReservaController {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 		
-    }*/
+    }
 	
 	/*listar reserva por cliente*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
