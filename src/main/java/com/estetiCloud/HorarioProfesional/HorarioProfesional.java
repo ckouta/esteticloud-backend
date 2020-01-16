@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.estetiCloud.BloqueHorario.Bloque_horario;
+import com.estetiCloud.BloqueHorario.BloqueHorario;
 import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Reserva.Reserva;
 
@@ -36,7 +36,7 @@ public class HorarioProfesional {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private Profesional profesional ;
 	@ManyToOne(cascade = CascadeType.MERGE)
-	private Bloque_horario bloque_horario ;
+	private BloqueHorario bloqueHorario ;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_reserva"),
@@ -50,12 +50,12 @@ public class HorarioProfesional {
 	
 	
 	public HorarioProfesional(Long id_horarioProfesional, @NotEmpty LocalDate fecha, Profesional profesional,
-			Bloque_horario bloque_horario, Reserva reserva, EstadoHorarioProfesional estado_horarioProfesional) {
+			BloqueHorario bloque_horario, Reserva reserva, EstadoHorarioProfesional estado_horarioProfesional) {
 		super();
 		this.id_horarioProfesional = id_horarioProfesional;
 		this.fecha = fecha;
 		this.profesional = profesional;
-		this.bloque_horario = bloque_horario;
+		this.bloqueHorario = bloque_horario;
 		this.reserva = reserva;
 		this.estado_horarioProfesional = estado_horarioProfesional;
 	}
@@ -81,11 +81,11 @@ public class HorarioProfesional {
 	public void setProfesional(Profesional profesional) {
 		this.profesional = profesional;
 	}
-	public Bloque_horario getBloque_horario() {
-		return bloque_horario;
+	public BloqueHorario getBloque_horario() {
+		return bloqueHorario;
 	}
-	public void setBloque_horario(Bloque_horario bloque_horario) {
-		this.bloque_horario = bloque_horario;
+	public void setBloque_horario(BloqueHorario bloque_horario) {
+		this.bloqueHorario = bloque_horario;
 	}
 
 	public Reserva getReserva() {

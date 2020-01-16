@@ -25,8 +25,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         		.antMatchers(HttpMethod.POST,"/cliente/usuario").permitAll()
         		.antMatchers(HttpMethod.POST,"/horario/**").permitAll()
         		.antMatchers(HttpMethod.GET,"/so/**").permitAll()
-        		.antMatchers(HttpMethod.POST,"/so/por_profesional").permitAll()
-        		.antMatchers(HttpMethod.POST,"/so/profesional").permitAll()
                 //agregar todas las rutas faltantes...
                 //si tiene mas de un rol seria .hasAnyRole*/
                 .anyRequest().authenticated()

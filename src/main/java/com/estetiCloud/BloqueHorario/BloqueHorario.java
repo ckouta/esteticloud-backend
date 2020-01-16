@@ -17,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "bloque_horario")
-public class Bloque_horario {
+public class BloqueHorario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +37,10 @@ public class Bloque_horario {
     name = "id_estado_bloque", referencedColumnName = "id_estado_bloque")
 	private EstadoBloque estado_bloque;
 	
-	public Bloque_horario() {}
+	public BloqueHorario() {}
 	
 
-	public Bloque_horario(Long idBloque, @NotEmpty String horaInicio, @NotEmpty String horaFin,
+	public BloqueHorario(Long idBloque, @NotEmpty String horaInicio, @NotEmpty String horaFin,
 			@NotEmpty String dia_semana, EstadoBloque estado_bloque) {
 
 		this.idBloque = idBloque;

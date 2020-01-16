@@ -27,34 +27,34 @@ public class BloqueHorarioController {
 	
 	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
 	@GetMapping(value = "/")
-    public ResponseEntity<List<Bloque_horario>> findAllBloques() {
-		List<Bloque_horario>lista = bloqueService.findAll();
+    public ResponseEntity<List<BloqueHorario>> findAllBloques() {
+		List<BloqueHorario>lista = bloqueService.findAll();
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		
     	if (lista.isEmpty()) {
     		
     		response.put("mensaje","No hay clientes para mostrar");
     		
-			return new ResponseEntity<List<Bloque_horario>>(lista,	HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<BloqueHorario>>(lista,	HttpStatus.NOT_FOUND);
 			
 		}
-		return new ResponseEntity<List<Bloque_horario>>(lista, HttpStatus.OK); 
+		return new ResponseEntity<List<BloqueHorario>>(lista, HttpStatus.OK); 
     }
 	
     
     //@PostMapping(value="/generarbloques")
     /*
      * Crear los bloques horarios para la semana en un rango de horas*/
-    public ResponseEntity<Bloque_horario> createBloqueHorario(@RequestBody RangoHora rango, BindingResult bindingResult){
+    public ResponseEntity<BloqueHorario> createBloqueHorario(@RequestBody RangoHora rango, BindingResult bindingResult){
     	try {
     		bloqueService.generarBloques(rango);
     	 }catch(DataAccessException e) {
     		 System.out.println(e.getMessage());
     		 System.out.println(e.getStackTrace().toString());
-             return new ResponseEntity<Bloque_horario>(HttpStatus.NOT_ACCEPTABLE);
+             return new ResponseEntity<BloqueHorario>(HttpStatus.NOT_ACCEPTABLE);
          }
 
-         return new ResponseEntity<Bloque_horario>(HttpStatus.ACCEPTED);
+         return new ResponseEntity<BloqueHorario>(HttpStatus.ACCEPTED);
     }
 
 

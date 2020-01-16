@@ -70,6 +70,7 @@ public class ServicioOfrecidoController {
     }
     
 	/*listar servicios ofrecido por un profesional*/
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
 	@PostMapping(value = "/por_profesional")
     public ResponseEntity<List<ServicioOfrecido>> findByServicio(@RequestBody Profesional profesional) {
 		List<ServicioOfrecido> aux = servicioOfrecidoService.buscarPorProfesional(profesional);
@@ -78,6 +79,7 @@ public class ServicioOfrecidoController {
     }
 	
 	/*lista los profesionales que realizan un servicio*/
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
 	@PostMapping(value = "/profesional")
     public ResponseEntity<List<Profesional>> findByServicio(@RequestBody Servicio servicio) {
 		List<Profesional> aux = new ArrayList<Profesional>();

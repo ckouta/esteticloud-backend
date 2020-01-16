@@ -22,17 +22,17 @@ public class BloqueHorarioServiceImpl implements IBloqueHorarioService {
 	private IBloqueHorarioService bloqueService;
 
 	@Transactional(readOnly = true)
-	public List<Bloque_horario> findAll() {
+	public List<BloqueHorario> findAll() {
 		return bloqueDao.findAll();
 	}
 
 	@Transactional
-	public void save(Bloque_horario cliente) {
+	public void save(BloqueHorario cliente) {
 		bloqueDao.save(cliente);
 	}
 
 	@Transactional(readOnly = true)
-	public Bloque_horario findOne(Long id) {
+	public BloqueHorario findOne(Long id) {
 		return bloqueDao.findById(id).orElse(null);
 	}
 
@@ -52,7 +52,7 @@ public class BloqueHorarioServiceImpl implements IBloqueHorarioService {
 			finInterv=inicio.plusMinutes(10);
 			for (int i = 0; i < 7; i++) {
 		
-				Bloque_horario bloque = new Bloque_horario(null,inicio.toString(),finInterv.toString(),i+"",estadoDao.getOne((long) 1));
+				BloqueHorario bloque = new BloqueHorario(null,inicio.toString(),finInterv.toString(),i+"",estadoDao.getOne((long) 1));
 				bloqueService.save(bloque);
 			}				
 			inicio=finInterv;				
@@ -60,13 +60,13 @@ public class BloqueHorarioServiceImpl implements IBloqueHorarioService {
 	}
 
 	@Override
-	public List<Bloque_horario> findByDiaSemana(String dia_semana) {
+	public List<BloqueHorario> findByDiaSemana(String dia_semana) {
 
 		return bloqueDao.findAllByDiaSemana(dia_semana);
 	}
 
 	@Override
-	public List<Bloque_horario> findByDiaSemanaAndHoraInicioBetween(String diaSemana, String horaInicio, String horaFin) {
+	public List<BloqueHorario> findByDiaSemanaAndHoraInicioBetween(String diaSemana, String horaInicio, String horaFin) {
 
 		return bloqueDao.findByDiaSemanaAndHoraInicioBetween(diaSemana, horaInicio,horaFin);
 	}

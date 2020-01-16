@@ -6,18 +6,18 @@ import com.estetiCloud.Varios.RangoHora;
 
 public interface IBloqueHorarioService {
 
-	List<Bloque_horario> findAll();
+	List<BloqueHorario> findAll();
 
-	void save(Bloque_horario bloque);
+	void save(BloqueHorario bloque);
 
-	Bloque_horario findOne(Long id);
+	BloqueHorario findOne(Long id);
 
 	void delete(Long id);
 
 	void generarBloques(RangoHora rango);
 
-	List<Bloque_horario> findByDiaSemana(String dia);
+	List<BloqueHorario> findByDiaSemana(String dia);
 
-	List<Bloque_horario> findByDiaSemanaAndHoraInicioBetween(String string, String horaInicio, String horaFin);
+	List<BloqueHorario> findByDiaSemanaAndHoraInicioBetween(String string, String horaInicio, String horaFin);
 
 }

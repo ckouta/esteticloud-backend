@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.estetiCloud.BloqueHorario.Bloque_horario;
+import com.estetiCloud.BloqueHorario.BloqueHorario;
 import com.estetiCloud.BloqueHorario.IBloqueHorarioService;
 import com.estetiCloud.Profesional.IProfesionalService;
 import com.estetiCloud.Profesional.Profesional;
@@ -64,16 +64,18 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 		EstadoHorarioProfesional estadoHorarioProfesional = estadoHorarioProfService.findOne((long) 1);
 		//es +1 porque se considerará el domingo=0, lunes=1 ...
 		
-		List<Bloque_horario> bloques = bloqueService.findByDiaSemanaAndHoraInicioBetween(dia+"",rango.getHoraInicio(),horaFin.minusMinutes(1).toString());
+		List<BloqueHorario> bloques = bloqueService.findByDiaSemanaAndHoraInicioBetween(dia+"",rango.getHoraInicio(),horaFin.minusMinutes(1).toString());
 		
-		for (Bloque_horario bloque_horario : bloques) {
-			save(new HorarioProfesional(null, fechaInicio, prof, bloque_horario, null, estadoHorarioProfesional));
+		for (BloqueHorario bloque_horario : bloques) {
+			if(horarioProfesionalDao.findByFechaAndBloqueHorario(fechaInicio, bloque_horario) == null) {
+				save(new HorarioProfesional(null, fechaInicio, prof, bloque_horario, null, estadoHorarioProfesional));
+			}
 		}	
 	}
 	@Transactional(readOnly=true)
 	public List<HorarioProfesional> findAllFecha(RangoFecha rango) {
 		LocalDate fechaInicio = LocalDate.parse(rango.getFecha());
-		return horarioProfesionalDao.findByFechaAndProfesional(fechaInicio, profService.findOne(rango.getId()));
+		return horarioProfesionalDao.findByFechaAndProfesionalOrderByFecha(fechaInicio, profService.findOne(rango.getId()));
 	}
 	@Transactional(readOnly=true)
 	public List<HorarioProfesional> findAllhoras(Profesional profesional) {
