@@ -21,7 +21,7 @@ public interface IHorarioProfesionalDao extends JpaRepository<HorarioProfesional
 
 	List<HorarioProfesional> findByReserva(Reserva reserva);
 	
-	HorarioProfesional findByFechaAndBloqueHorario(LocalDate fecha,BloqueHorario bloque_horario);
+	HorarioProfesional findByFechaAndBloqueHorarioAndProfesional(LocalDate fecha,BloqueHorario bloque_horario, Profesional profesional);
 	
 	@Query("SELECT  h.reserva.servicio, COUNT( Distinct h.reserva) from HorarioProfesional h where (h.fecha between ?1 and ?2) group by (h.reserva.servicio.id_servicio)")
 	List<Object> findTopServicios( LocalDate fechaInicio , LocalDate fechaFin);

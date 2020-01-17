@@ -67,7 +67,7 @@ public class HorarioProfesionalServiceImpl implements IHorarioProfesionalService
 		List<BloqueHorario> bloques = bloqueService.findByDiaSemanaAndHoraInicioBetween(dia+"",rango.getHoraInicio(),horaFin.minusMinutes(1).toString());
 		
 		for (BloqueHorario bloque_horario : bloques) {
-			if(horarioProfesionalDao.findByFechaAndBloqueHorario(fechaInicio, bloque_horario) == null) {
+			if(horarioProfesionalDao.findByFechaAndBloqueHorarioAndProfesional(fechaInicio, bloque_horario, prof) == null) {
 				save(new HorarioProfesional(null, fechaInicio, prof, bloque_horario, null, estadoHorarioProfesional));
 			}
 		}	

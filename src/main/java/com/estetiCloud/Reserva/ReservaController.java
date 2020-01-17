@@ -43,7 +43,7 @@ public class ReservaController {
 		}
 		return new ResponseEntity<List<Reserva>>(lista, HttpStatus.OK); 
     }
-	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI","ROLE_CLIENT"})
 	@GetMapping(value = "/estado")
     public ResponseEntity<List<EstadoReserva>> findAllEstado() {
 		List<EstadoReserva>lista = estadoReserService.findAll();
@@ -74,14 +74,15 @@ public class ReservaController {
 	
 	/*elimina reserva*/
 	@Secured({"ROLE_CLIENT","ROLE_ESTETI"})
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id, @PathVariable Long id_estado) {
-
+    @DeleteMapping(value = "/{id}&{id_estado}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable String id, @PathVariable String id_estado) {
+		
         Map<String,Object> response =new HashMap<String, Object>();
         try {
-        	Reserva reserva = reservaService.findOne(id);
-        	EstadoReserva estado = estadoReserService.findOne(id_estado);
+        	Reserva reserva = reservaService.findOne(Long.parseLong(id));
+        	EstadoReserva estado = estadoReserService.findOne(Long.parseLong(id_estado));
         	reserva.setEstado_reserva(estado);
+        	reservaService.save(reserva);
         	//reservaService.delete(id);
         }catch(DataAccessException e) {
             response.put("mensaje","Error al eliminar");
