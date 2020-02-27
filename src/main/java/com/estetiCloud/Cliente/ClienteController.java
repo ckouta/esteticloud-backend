@@ -17,6 +17,7 @@ import com.estetiCloud.Profesional.Profesional;
 import com.estetiCloud.Role.IRoleService;
 import com.estetiCloud.Role.Role;
 import com.estetiCloud.Usuario.IUsuarioService;
+import com.estetiCloud.Usuario.Usuario;
 import com.estetiCloud.Varios.Registro;
 
 @CrossOrigin(origins = "*")
@@ -124,6 +125,26 @@ public class ClienteController {
         	Clienteactual.setTelefono(cliente.getTelefono());
         	Clienteactual.setEmail(cliente.getEmail());
         	clienteService.save(Clienteactual);
+
+        }catch(DataAccessException e) {
+            return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<Map<String,Object>>(HttpStatus.OK);
+
+    }
+    /*actualiza un cliente*/
+    @Secured({"ROLE_ESTETI","ROLE_CLIENT"})
+    @PutMapping(value ="/updateContraseña")
+    public ResponseEntity<Map<String, Object>> updateContraseña(@RequestBody Registro usuario) {
+    	Usuario UsuarioActual= usuarioService.findByUsername(usuario.getUsuario().getUsername());
+        try {
+        	if(passwordEncoder.matches(usuario.getUsuario().getPassword(), UsuarioActual.getPassword())) {
+            	UsuarioActual.setPassword(passwordEncoder.encode(usuario.getNuevaContrasena()));
+            	usuarioService.save(UsuarioActual);
+        	}else {
+        		 return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        	}
+
 
         }catch(DataAccessException e) {
             return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);

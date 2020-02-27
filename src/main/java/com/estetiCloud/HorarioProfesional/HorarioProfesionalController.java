@@ -47,7 +47,18 @@ public class HorarioProfesionalController {
 		}
 		return new ResponseEntity<List<HorarioProfesional>>(lista, HttpStatus.OK); 
     }
-	
+	@Secured({"ROLE_ADMIN","ROLE_ESTETI"})
+	/*ver un horario*/
+	@GetMapping(value = "/{id}")
+    public ResponseEntity<?> show(@PathVariable long id) {
+		Map<String,Object> response =new HashMap<String, Object>(); 
+		HorarioProfesional horario = horarioService.findOne(id);
+    	if (horario==null ) {	
+    		response.put("mensaje","no se encuentra el horario");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<HorarioProfesional>(horario, HttpStatus.OK); 
+    }
 	/*encuentra el top de servicios mas utilizados*/
 	@Secured("ROLE_ADMIN")
 	@PostMapping(value = "/topServicio")
