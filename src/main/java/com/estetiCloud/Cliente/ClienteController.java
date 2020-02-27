@@ -77,11 +77,14 @@ public class ClienteController {
     public ResponseEntity<Cliente> createUsuario(@RequestBody Registro registro,BindingResult bindingResult){
     	Role rol = roleService.findOne((long) 2);
         try {  	
-        	clienteService.save(registro.getCliente());
+        	EstadoCliente estadoCliente = estadoClienteService.findById(1L).orElse(null);
+        	Cliente cliente = registro.getCliente();
+        	cliente.setEstado_cliente(estadoCliente);
+        	clienteService.save(cliente);
         	registro.getUsuario().setPassword(passwordEncoder.encode(registro.getUsuario().getPassword()));
         	registro.getUsuario().setEnable(true);
         	usuarioService.save(registro.getUsuario());
-        	 usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
+        	usuarioService.saveUsuario_Roles(registro.getUsuario().getId_Usuario(),rol.getId_Role() );
         }catch(DataAccessException e) {
             return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
