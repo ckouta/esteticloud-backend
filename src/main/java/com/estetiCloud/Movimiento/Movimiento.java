@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.estetiCloud.Profesional.Profesional;
@@ -14,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "movimiento")
+@SQLDelete(sql="UPDATE movimiento SET id_estado_movimiento = 2 where id_movimiento=?")
+@Where(clause="id_estado_movimiento != 2")
 public class Movimiento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

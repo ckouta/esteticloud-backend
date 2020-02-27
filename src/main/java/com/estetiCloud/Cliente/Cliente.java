@@ -14,8 +14,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "clientes")
+@SQLDelete(sql="UPDATE cliente SET id_estado_cliente = 2 where id_cliente=?")
+@Where(clause="id_estado_cliente != 2")
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
