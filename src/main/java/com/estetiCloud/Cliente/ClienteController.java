@@ -130,7 +130,7 @@ public class ClienteController {
 
     }
     /*actualiza un cliente*/
-    @Secured({"ROLE_ESTETI","ROLE_CLIENT"})
+    @Secured({"ROLE_ESTETI","ROLE_CLIENT","ROLE_ADMIN"})
     @PutMapping(value ="/updateContraseña")
     public ResponseEntity<Map<String, Object>> updateContraseña(@RequestBody Registro usuario) {
     	Usuario UsuarioActual= usuarioService.findByUsername(usuario.getUsuario().getUsername());
