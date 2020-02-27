@@ -9,7 +9,7 @@ import com.estetiCloud.Cliente.Cliente;
 
 public interface IReservaDao extends JpaRepository<Reserva, Long>{
 
-	List<Reserva> findByCliente(Cliente cliente);
+	List<Reserva> findByClienteOrderByIdReservaDesc(Cliente cliente);
 
 	
 

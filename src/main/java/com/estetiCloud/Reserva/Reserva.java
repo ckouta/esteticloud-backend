@@ -1,6 +1,7 @@
 package com.estetiCloud.Reserva;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,8 @@ import com.estetiCloud.Servicio.Servicio;
 public class Reserva {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_reserva;
+	@Column(name="id_reserva")
+	private Long idReserva;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_cliente"),
@@ -40,7 +42,7 @@ public class Reserva {
 
 	public Reserva(Long id_reserva, Cliente cliente, Servicio servicio, EstadoReserva estado_reserva) {
 		super();
-		this.id_reserva = id_reserva;
+		this.idReserva = id_reserva;
 		this.cliente = cliente;
 		this.servicio = servicio;
 		this.estado_reserva = estado_reserva;
@@ -51,12 +53,12 @@ public class Reserva {
 
 
 	public Long getId_reserva() {
-		return id_reserva;
+		return idReserva;
 	}
 
 
 	public void setId_reserva(Long id_reserva) {
-		this.id_reserva = id_reserva;
+		this.idReserva = id_reserva;
 	}
 
 

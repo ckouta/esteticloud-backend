@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.estetiCloud.Profesional.Profesional;
+import com.estetiCloud.Reserva.IReservaService;
+import com.estetiCloud.Reserva.Reserva;
 import com.estetiCloud.Role.IRoleService;
 import com.estetiCloud.Role.Role;
 import com.estetiCloud.Usuario.IUsuarioService;
@@ -36,6 +38,8 @@ public class ClienteController {
 	private IUsuarioService usuarioService;
 	@Autowired
     private IRoleService roleService;
+	@Autowired
+    private IReservaService reservaService;
 
 	/*retorna la lista de clientes*/
 	@Secured("ROLE_ESTETI")
@@ -57,6 +61,17 @@ public class ClienteController {
 			return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK); 
+    }
+	/*encuentra los datos del cliente a travez de su correo*/
+	@Secured({"ROLE_ESTETI","ROLE_CLIENT"})
+	@GetMapping(value = "/servicio/{id}")
+    public ResponseEntity<?> serviciosAnteriores(@PathVariable Long id) {
+		Cliente cliente = clienteService.findOne(id);
+    	if (cliente==null ) {
+			return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    	List<Reserva> lista = reservaService.findOneCliente(cliente);
+		return new ResponseEntity<List<Reserva>>(lista, HttpStatus.OK); 
     }
 	
 	/*Guarda un cliente*/
