@@ -16,8 +16,18 @@ public class Registro {
 	
 	private Cliente cliente;
 	
+	String nuevaContrasena;
+	
 	public Registro() {
 		
+	}
+
+	public String getNuevaContrasena() {
+		return nuevaContrasena;
+	}
+
+	public void setNuevaContrasena(String nuevaContrasena) {
+		this.nuevaContrasena = nuevaContrasena;
 	}
 
 	public Usuario getUsuario() {
