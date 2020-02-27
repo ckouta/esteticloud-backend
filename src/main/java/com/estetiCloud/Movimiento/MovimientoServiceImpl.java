@@ -40,7 +40,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
 	@Transactional(readOnly=true)
 	public List<Movimiento> buscarPorProfesional(Profesional profesional) {
 		// TODO Auto-generaMOvited method stub
-		return movimientoDao.findByProfesional(profesional);
+		return movimientoDao.findByProfesionalOrderByFechaDesc(profesional);
 	}
 
 	@Transactional(readOnly=true)

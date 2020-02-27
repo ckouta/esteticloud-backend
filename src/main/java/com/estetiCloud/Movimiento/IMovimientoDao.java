@@ -11,7 +11,7 @@ import com.estetiCloud.Profesional.Profesional;
 
 public interface IMovimientoDao extends JpaRepository<Movimiento, Long>{
 
-	List<Movimiento> findByProfesional(Profesional profesional);
+	List<Movimiento> findByProfesionalOrderByFechaDesc(Profesional profesional);
 
 	@Query("SELECT  m  from Movimiento m where (m.fecha between ?1 and ?2)")
 	List<Object> findFechaMovimientos( LocalDate fechaInicio , LocalDate fechaFin);
