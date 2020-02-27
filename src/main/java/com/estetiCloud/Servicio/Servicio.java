@@ -14,8 +14,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name="servicio")
+@SQLDelete(sql="UPADTE servicio SET id_estado_servicio = 2 where id_servicio=?")
+@Where(clause="id_estado_servicio != 2")
 public class Servicio implements Serializable{
 	private static final long serialVersionUID=1L;
 	@Id
