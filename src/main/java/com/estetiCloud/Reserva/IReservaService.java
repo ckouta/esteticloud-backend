@@ -16,5 +16,7 @@ public interface IReservaService {
 	
 	List<Reserva> findOneCliente(Cliente cliente);
 	
+	 List<Object> findServicioAnteriorCliente(Cliente cliente);
+	
 
 }

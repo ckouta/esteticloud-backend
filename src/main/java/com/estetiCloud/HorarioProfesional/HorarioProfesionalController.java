@@ -80,7 +80,7 @@ public class HorarioProfesionalController {
     public ResponseEntity<Map<String, Object>> eliminar(@PathVariable Long id) {
 		try {
 			HorarioProfesional horario = horarioService.findOne(id);
-			if(horario.getReserva() != null){
+			if(horario.getReserva() == null){
 				horarioService.delete(id);
 			}else {
 				return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);

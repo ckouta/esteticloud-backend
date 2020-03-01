@@ -37,4 +37,8 @@ public class ReservaServiceImpl implements IReservaService {
 	public List<Reserva> findOneCliente(Cliente cliente) {
 		return reservaDao.findByClienteOrderByIdReservaDesc(cliente);
 	}
+	@Transactional(readOnly=true)
+	public List<Object> findServicioAnteriorCliente(Cliente cliente) {
+		return reservaDao.findServicioAnteriores(cliente);
+	}
 }
