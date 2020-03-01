@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.estetiCloud.Role.IRoleService;
 import com.estetiCloud.Role.Role;
+import com.estetiCloud.ServicioOfrecido.IServicioOfrecidoService;
+import com.estetiCloud.ServicioOfrecido.ServicioOfrecido;
 import com.estetiCloud.Usuario.IUsuarioService;
 import com.estetiCloud.Varios.Registro;
 
@@ -41,8 +43,9 @@ public class ProfesionalController {
 	private IUsuarioService usuarioService;
 	@Autowired
     private IRoleService roleService;
+	@Autowired
+	private IServicioOfrecidoService servOfreServ;
 
-	
 	@Autowired
 	private IEstadoProfesionalService estadoProfService;
 
@@ -153,7 +156,13 @@ public class ProfesionalController {
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 
         try {
+        	
+        	List<ServicioOfrecido> listaServiciosOfrecidos = servOfreServ.buscarPorProfesional(profesionalService.findOne(id));
+        	for (ServicioOfrecido servOfre : listaServiciosOfrecidos) {
+				servOfreServ.delete(servOfre.getId_servicioOfrecido());
+			}
         	profesionalService.delete(id);
+        	
         }catch(DataAccessException e) {
             return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

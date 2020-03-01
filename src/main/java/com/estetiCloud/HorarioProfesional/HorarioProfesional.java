@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.estetiCloud.BloqueHorario.BloqueHorario;
 import com.estetiCloud.Profesional.Profesional;
@@ -33,6 +37,7 @@ public class HorarioProfesional {
 	@NotNull
 	private LocalDate fecha;
 	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private Profesional profesional ;
 	@ManyToOne(cascade = CascadeType.MERGE)
