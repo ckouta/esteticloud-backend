@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.estetiCloud.Reserva.IReservaService;
+import com.estetiCloud.Reserva.Reserva;
 import com.estetiCloud.Role.IRoleService;
 import com.estetiCloud.Role.Role;
 import com.estetiCloud.Usuario.IUsuarioService;
@@ -67,8 +68,8 @@ public class ClienteController {
     	if (cliente==null ) {
 			return new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-    	List<Object> lista = reservaService.findServicioAnteriorCliente(cliente);
-		return new ResponseEntity<List<Object>>(lista, HttpStatus.OK); 
+    	List<Reserva> lista = reservaService.findOneCliente(cliente);
+		return new ResponseEntity<List<Reserva>>(lista, HttpStatus.OK); 
     }
 	
 	/*Guarda un cliente*/

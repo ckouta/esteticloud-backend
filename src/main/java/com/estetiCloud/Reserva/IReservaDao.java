@@ -13,8 +13,5 @@ public interface IReservaDao extends JpaRepository<Reserva, Long>{
 
 	List<Reserva> findByClienteOrderByIdReservaDesc(Cliente cliente);
 
-	@Query("SELECT Distinct h.servicio, h.idReserva from Reserva h where (h.cliente = ?1) order by h.idReserva DESC")
-	List<Object> findServicioAnteriores(Cliente cliente);
-	
 
 }
