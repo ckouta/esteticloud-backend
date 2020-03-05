@@ -127,6 +127,7 @@ public class HorarioProfesionalController {
 	@PostMapping(value = "/topCliente")
     public ResponseEntity<List<Object>> topCliente(@RequestBody IntervaloFecha fecha) {
 		List<Object>lista = horarioService.findTopClientes(fecha);
+		if(lista.size()>5)  lista=lista.subList(0, 5);
 		Map<String,Object> response =new HashMap<String, Object>(); 
 		
     	if (lista.isEmpty()) {
