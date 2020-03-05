@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,6 +38,7 @@ public class Movimiento {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate fecha;
 
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_profesional"),
     name = "id_profesional", referencedColumnName = "id_profesional")

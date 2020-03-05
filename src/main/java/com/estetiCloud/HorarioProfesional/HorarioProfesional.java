@@ -40,9 +40,12 @@ public class HorarioProfesional {
 	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private Profesional profesional ;
+	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private BloqueHorario bloqueHorario ;
 	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_reserva"),
     name = "id_reserva", referencedColumnName = "id_reserva")

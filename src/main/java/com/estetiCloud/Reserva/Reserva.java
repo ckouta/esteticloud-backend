@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import com.estetiCloud.Cliente.Cliente;
 import com.estetiCloud.Servicio.Servicio;
 
@@ -23,11 +26,14 @@ public class Reserva {
 	@Column(name="id_reserva")
 	private Long idReserva;
 	
+	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_cliente"),
     name = "id_cliente", referencedColumnName = "id_cliente")
 	private Cliente cliente;
 	
+	@NotFound(action = NotFoundAction.IGNORE)
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "id_servicio"),
     name = "id_servicio", referencedColumnName = "id_servicio")
