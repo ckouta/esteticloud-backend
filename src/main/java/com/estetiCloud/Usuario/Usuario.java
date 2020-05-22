@@ -14,10 +14,10 @@ public class Usuario implements Serializable {
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id_Usuario;
 
-	    @Column(unique = true, length = 20)
+	    @Column(unique = true, length = 100)
 	    private String username;
 
-	    @Column(length = 60)
+	    @Column(length = 100)
 	    private String password;
 
 	    private boolean enable;
